@@ -1,0 +1,377 @@
+<!-- Main Dashboard Layout -->
+<div class="dashboard-container">
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <div class="company-logo">
+      <h2>Gate Access</h2>
+    </div>
+    <nav>
+      <ul>
+        <li *ngFor="let page of pages" 
+            [class.active]="selectedPage === page" 
+            (click)="onChangePage(page)">
+          {{ page }}
+        </li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="content">
+    <!-- DASHBOARD SUMMARY PAGE -->
+    <div *ngIf="selectedPage === 'Dashboard'" class="dashboard-summary">
+      <h1>Dashboard</h1>
+      <div class="summary-cards">
+        <div class="card">
+          <h3>Registered Vehicles</h3>
+          <div class="count">{{ registeredVehicles }}</div>
+        </div>
+        <div class="card">
+          <h3>Successful Access</h3>
+          <div class="count">{{ successfulAccess }}</div>
+        </div>
+        <div class="card">
+          <h3>Denied Access</h3>
+          <div class="count">{{ deniedAccess }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGE USERS AND VEHICLES PAGE -->
+    <div *ngIf="selectedPage === 'Manage Users and Vehicles'" class="manage-users">
+      <h1>Manage Users and Vehicles</h1>
+      
+      <!-- Message Display -->
+      <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
+        {{ message }}
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tabs">
+        <div *ngFor="let tab of userTabs" 
+             [class.active]="selectedUserTab === tab" 
+             (click)="selectedUserTab = tab"
+             class="tab">
+          {{ tab }}
+        </div>
+      </div>
+
+      <!-- Register New User Tab -->
+      <div *ngIf="selectedUserTab === 'Register New User'" class="tab-content">
+        <form [formGroup]="regUserForm" (ngSubmit)="registerUser()">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" formControlName="name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" formControlName="email">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="text" id="phone" formControlName="phone_number">
+            </div>
+            <div class="form-group">
+              <label for="cnic">CNIC</label>
+              <input type="text" id="cnic" formControlName="cnic">
+            </div>
+            <div class="form-group">
+              <label for="reg_number">Registration Number</label>
+              <input type="text" id="reg_number" formControlName="registration_number">
+            </div>
+            <div class="form-group">
+              <label for="plate_number">Plate Number</label>
+              <input type="text" id="plate_number" formControlName="plate_number">
+            </div>
+            <div class="form-group">
+              <label for="model">Vehicle Model</label>
+              <input type="text" id="model" formControlName="model">
+            </div>
+            <div class="form-group">
+              <label for="color">Vehicle Color</label>
+              <input type="text" id="color" formControlName="color">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="face_image">Face Image</label>
+            <input type="file" id="face_image" (change)="onRegFileSelected($event)" accept="image/*">
+            <small *ngIf="regFile">Selected file: {{ regFile.name }}</small>
+          </div>
+          
+          <button type="submit" class="submit-btn" [disabled]="regUserForm.invalid || !regFile">Register</button>
+        </form>
+      </div>
+
+      <!-- View/Edit Users Tab -->
+      <div *ngIf="selectedUserTab === 'View/Edit Users'" class="tab-content">
+        <div class="search-box">
+          <input type="text" placeholder="Search by CNIC" [(ngModel)]="searchCnic">
+          <button (click)="getUsers()">Search</button>
+          <button (click)="resetSearch()" class="secondary-btn">Reset</button>
+        </div>
+
+        <div class="users-list">
+          <div *ngFor="let user of users" class="user-card">
+            <!-- User display (when not editing) -->
+            <ng-container *ngIf="editingUserId !== user.id">
+              <div class="user-info">
+                <h3>{{ user.name }}</h3>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+                <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+                <p><strong>Vehicle:</strong> {{ user.registration_number }} ({{ user.plate_number }})</p>
+              </div>
+              <div class="user-actions">
+                <button (click)="startEditing(user)" class="edit-btn">Edit</button>
+                <button (click)="deleteUser(user.id)" class="delete-btn">Delete</button>
+              </div>
+            </ng-container>
+
+            <!-- Edit form (when editing) -->
+            <ng-container *ngIf="editingUserId === user.id">
+              <form [formGroup]="editingUserForm">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="edit-name">Name</label>
+                    <input type="text" id="edit-name" formControlName="name">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" formControlName="email">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-phone">Phone</label>
+                    <input type="text" id="edit-phone" formControlName="phone_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-reg">Registration Number</label>
+                    <input type="text" id="edit-reg" formControlName="registration_number">
+                  </div>
+                  <div class="form-group">
+                    <label for="edit-plate">Plate Number</label>
+                    <input type="text" id="edit-plate" formControlName="plate_number">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="edit-face">Face Image (Optional)</label>
+                  <input type="file" id="edit-face" (change)="onEditFileSelected($event)" accept="image/*">
+                  <small *ngIf="editFile">Selected file: {{ editFile.name }}</small>
+                </div>
+                
+                <div class="edit-actions">
+                  <button type="button" (click)="updateUser(user.id)" [disabled]="editingUserForm.invalid">Save</button>
+                  <button type="button" (click)="cancelEditing()" class="cancel-btn">Cancel</button>
+                </div>
+              </form>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESS GATE VIDEO PAGE -->
+    <div *ngIf="selectedPage === 'Process Gate Video'" class="process-video">
+      <h1>Process Gate Access Video</h1>
+      
+      <!-- Message Display -->
+      <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
+        {{ message }}
+      </div>
+
+      <div class="video-uploads">
+        <div class="upload-section">
+          <h3>Upload Gate Video</h3>
+          <input type="file" accept="video/*" (change)="onGateVideoSelected($event)">
+          <video *ngIf="gateVideoUrl" [src]="gateVideoUrl" controls></video>
+        </div>
+        
+        <div class="upload-section">
+          <h3>Upload Face Video (Optional)</h3>
+          <input type="file" accept="video/*" (change)="onFaceVideoSelected($event)">
+          <video *ngIf="faceVideoUrl" [src]="faceVideoUrl" controls></video>
+        </div>
+      </div>
+
+      <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
+        {{ processing ? 'Processing...' : 'Process Video for Access' }}
+      </button>
+
+      <!-- Processing Results -->
+      <div *ngIf="processResult" class="process-results">
+        <!-- License Plates Section -->
+        <div class="results-section">
+          <h3>License Plates Detected</h3>
+          <ng-container *ngIf="processResult.all_plates && processResult.all_plates.length > 0; else noPlates">
+            <ul>
+              <li *ngFor="let plate of processResult.all_plates">{{ plate }}</li>
+            </ul>
+          </ng-container>
+          <ng-template #noPlates>
+            <p class="warning-text">No license plates were detected in the video.</p>
+          </ng-template>
+        </div>
+
+        <!-- Face Recognition Results (if face video provided) -->
+        <div *ngIf="faceVideoFile" class="results-section">
+          <h3>Face Recognition Results</h3>
+          <div *ngIf="processResult.face_match" class="success-text">
+            ✅ Face matched with confidence: {{ processResult.face_confidence * 100 | number:'1.1-1' }}%
+          </div>
+          <div *ngIf="!processResult.face_match" class="warning-text">
+            ❌ No matching face found in the database.
+          </div>
+        </div>
+
+        <!-- Access Results -->
+        <div class="results-section access-result">
+          <div *ngIf="processResult.access_granted" class="success-text">
+            <h2>✅ ACCESS GRANTED</h2>
+            
+            <div *ngIf="processResult.details" class="details-container">
+              <h3>Vehicle Information</h3>
+              <p><strong>Plate Number:</strong> {{ processResult.details.vehicle_info?.plate_number || 'N/A' }}</p>
+              <p><strong>Model:</strong> {{ processResult.details.vehicle_info?.model || 'N/A' }}</p>
+              <p><strong>Color:</strong> {{ processResult.details.vehicle_info?.color || 'N/A' }}</p>
+              
+              <h3>User Information</h3>
+              <p><strong>Name:</strong> {{ processResult.details.user_info?.name || 'N/A' }}</p>
+              <p><strong>Email:</strong> {{ processResult.details.user_info?.email || 'N/A' }}</p>
+              
+              <p><strong>Confidence:</strong> {{ processResult.confidence * 100 | number:'1.1-1' }}%</p>
+            </div>
+          </div>
+          <div *ngIf="!processResult.access_granted" class="error-text">
+            <h2>❌ ACCESS DENIED</h2>
+            <p>No matching vehicle found in the database.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCESS LOGS PAGE -->
+    <div *ngIf="selectedPage === 'Access Logs'" class="access-logs">
+      <h1>Access Logs</h1>
+      
+      <!-- Filters -->
+      <div class="filters">
+        <div class="date-filters">
+          <div class="form-group">
+            <label for="start-date">Start Date</label>
+            <input type="date" id="start-date" [ngModel]="startDate | date:'yyyy-MM-dd'" 
+                  (ngModelChange)="startDate = $event">
+          </div>
+          <div class="form-group">
+            <label for="end-date">End Date</label>
+            <input type="date" id="end-date" [ngModel]="endDate | date:'yyyy-MM-dd'" 
+                  (ngModelChange)="endDate = $event">
+          </div>
+        </div>
+        <div class="status-filter">
+          <label>Status Filter</label>
+          <div class="checkbox-group">
+            <div class="checkbox-item" *ngFor="let status of ['Granted', 'Denied', 'Pending']">
+              <input type="checkbox" 
+                     [id]="'status-' + status" 
+                     [checked]="statusFilter.includes(status)"
+                     (change)="onStatusFilterChange(status, $event)">
+              <label [attr.for]="'status-' + status">{{ status }}</label>
+            </div>
+          </div>
+        </div>
+        
+        <button (click)="fetchAccessLogs()" class="fetch-btn" [disabled]="loadingLogs">
+          {{ loadingLogs ? 'Loading...' : 'Fetch Logs' }}
+        </button>
+        
+        <!-- Logs List -->
+        <div class="logs-list">
+          <div *ngFor="let log of accessLogs" class="log-item">
+            <div class="log-status">
+              <div *ngIf="log.status === 'Granted'" class="status-icon success">✅</div>
+              <div *ngIf="log.status === 'Denied'" class="status-icon error">❌</div>
+              <div *ngIf="log.status === 'Pending'" class="status-icon pending">⏳</div>
+            </div>
+            
+            <div class="log-details">
+              <div class="vehicle-info">
+                <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }} ({{ log.vehicle?.model || 'Unknown' }})
+              </div>
+              
+              <div *ngIf="sessionStorage.getItem('user_role') === 'admin'" class="user-info">
+                <strong>User:</strong> {{ log.user?.name || 'Unknown' }} ({{ log.user?.email || 'Unknown' }})
+              </div>
+              
+              <div class="time-info">
+                <div><strong>Entry Time:</strong> {{ log.entry_time | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+                <div *ngIf="log.exit_time">
+                  <strong>Exit Time:</strong> {{ log.exit_time | date:'yyyy-MM-dd HH:mm:ss' }}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="accessLogs.length === 0 && !loadingLogs" class="no-logs">
+            No logs found for the selected filters.
+          </div>
+        </div>
+        
+        <!-- SETTINGS PAGE -->
+        
+      </div>
+    </div>
+    <div *ngIf="selectedPage === 'Settings'" class="settings-page">
+      <h1>Account Settings</h1>
+      
+      User Information
+      <div *ngIf="userData" class="user-info-section">
+        <h2>User Information</h2>
+        <div class="info-item">
+          <strong>Name:</strong> {{ userData.name }}
+        </div>
+        <div class="info-item">
+          <strong>Email:</strong> {{ userData.email }}
+        </div>
+        <div class="info-item">
+          <strong>Role:</strong> {{ userData.role }}
+        </div>
+      </div>
+      
+      Change Password Form
+      <div class="password-section">
+        <h2>Change Password</h2>
+        
+        <div *ngIf="passwordChangeMessage" 
+             [ngClass]="passwordChangeMessage.includes('successfully') ? 'success-message' : 'error-message'">
+          {{ passwordChangeMessage }}
+        </div>
+        
+        <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+          <div class="form-group">
+            <label for="current-password">Current Password</label>
+            <input type="password" id="current-password" formControlName="currentPassword">
+          </div>
+          
+          <div class="form-group">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password" formControlName="newPassword">
+          </div>
+          
+          <div class="form-group">
+            <label for="confirm-password">Confirm New Password</label>
+            <input type="password" id="confirm-password" formControlName="confirmPassword">
+          </div>
+          
+          <button type="submit" [disabled]="passwordForm.invalid" class="change-password-btn">
+            Change Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
