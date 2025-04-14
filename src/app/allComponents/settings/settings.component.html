@@ -1,0 +1,49 @@
+<div class="settings-page">
+  <h1>Account Settings</h1>
+
+  <!-- User Information -->
+  <div *ngIf="userData" class="user-info-section">
+    <h2>User Information</h2>
+    <div class="info-item">
+      <strong>Name:</strong> {{ userData.name }}
+    </div>
+    <div class="info-item">
+      <strong>Email:</strong> {{ userData.email }}
+    </div>
+    <div class="info-item">
+      <strong>Role:</strong> {{ userData.role }}
+    </div>
+  </div>
+
+  <!-- Change Password Form -->
+  <div class="password-section">
+    <h2>Change Password</h2>
+
+    <div *ngIf="passwordChangeMessage"
+      [ngClass]="passwordChangeMessage.includes('successfully') ? 'success-message' : 'error-message'">
+      {{ passwordChangeMessage }}
+    </div>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+      <div class="form-group">
+        <label for="current-password">Current Password</label>
+        <input type="password" id="current-password" formControlName="currentPassword">
+      </div>
+
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" id="new-password" formControlName="newPassword">
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm New Password</label>
+        <input type="password" id="confirm-password" formControlName="confirmPassword">
+      </div>
+
+      <button type="submit" [disabled]="passwordForm.invalid" class="change-password-btn">
+        Change Password
+      </button>
+    </form>
+  </div>
+
+</div>

@@ -1,0 +1,132 @@
+ <!-- MANAGE USERS AND VEHICLES PAGE -->
+ <div class="manage-users">
+    <h1>Manage Users and Vehicles</h1>
+
+    <!-- Message Display -->
+    <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
+      {{ message }}
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tabs">
+      <div *ngFor="let tab of userTabs" [class.active]="selectedUserTab === tab" (click)="selectedUserTab = tab"
+        class="tab">
+        {{ tab }}
+      </div>
+    </div>
+
+    <!-- Register New User Tab -->
+    <div *ngIf="selectedUserTab === 'Register New User'" class="tab-content">
+      <form [formGroup]="regUserForm" (ngSubmit)="registerUser()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" formControlName="phone_number">
+          </div>
+          <div class="form-group">
+            <label for="cnic">CNIC</label>
+            <input type="text" id="cnic" formControlName="cnic">
+          </div>
+          <div class="form-group">
+            <label for="reg_number">Registration Number</label>
+            <input type="text" id="reg_number" formControlName="registration_number">
+          </div>
+          <div class="form-group">
+            <label for="plate_number">Plate Number</label>
+            <input type="text" id="plate_number" formControlName="plate_number">
+          </div>
+          <div class="form-group">
+            <label for="model">Vehicle Model</label>
+            <input type="text" id="model" formControlName="model">
+          </div>
+          <div class="form-group">
+            <label for="color">Vehicle Color</label>
+            <input type="text" id="color" formControlName="color">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="face_image">Face Image</label>
+          <input type="file" id="face_image" (change)="onRegFileSelected($event)" accept="image/*">
+          <small *ngIf="regFile">Selected file: {{ regFile.name }}</small>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="regUserForm.invalid || !regFile">Register</button>
+      </form>
+    </div>
+
+    <!-- View/Edit Users Tab -->
+    <div *ngIf="selectedUserTab === 'View/Edit Users'" class="tab-content">
+      <div class="search-box">
+        <input type="text" placeholder="Search by CNIC" [(ngModel)]="searchCnic">
+        <button (click)="getUsers()">Search</button>
+        <button (click)="resetSearch()" class="secondary-btn">Reset</button>
+      </div>
+
+      <div class="users-list">
+        <div *ngFor="let user of users" class="user-card">
+          <!-- User display (when not editing) -->
+          <ng-container *ngIf="editingUserId !== user.id">
+            <div class="user-info">
+              <h3>{{ user.name }}</h3>
+              <p><strong>Email:</strong> {{ user.email }}</p>
+              <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+              <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+              <p><strong>Vehicle:</strong> {{ user.registration_number }} ({{ user.plate_number }})</p>
+            </div>
+            <div class="user-actions">
+              <button (click)="startEditing(user)" class="edit-btn">Edit</button>
+              <button (click)="deleteUser(user.id)" class="delete-btn">Delete</button>
+            </div>
+          </ng-container>
+
+          <!-- Edit form (when editing) -->
+          <ng-container *ngIf="editingUserId === user.id">
+            <form [formGroup]="editingUserForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="edit-name">Name</label>
+                  <input type="text" id="edit-name" formControlName="name">
+                </div>
+                <div class="form-group">
+                  <label for="edit-email">Email</label>
+                  <input type="email" id="edit-email" formControlName="email">
+                </div>
+                <div class="form-group">
+                  <label for="edit-phone">Phone</label>
+                  <input type="text" id="edit-phone" formControlName="phone_number">
+                </div>
+                <div class="form-group">
+                  <label for="edit-reg">Registration Number</label>
+                  <input type="text" id="edit-reg" formControlName="registration_number">
+                </div>
+                <div class="form-group">
+                  <label for="edit-plate">Plate Number</label>
+                  <input type="text" id="edit-plate" formControlName="plate_number">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="edit-face">Face Image (Optional)</label>
+                <input type="file" id="edit-face" (change)="onEditFileSelected($event)" accept="image/*">
+                <small *ngIf="editFile">Selected file: {{ editFile.name }}</small>
+              </div>
+
+              <div class="edit-actions">
+                <button type="button" (click)="updateUser(user.id)" [disabled]="editingUserForm.invalid">Save</button>
+                <button type="button" (click)="cancelEditing()" class="cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>

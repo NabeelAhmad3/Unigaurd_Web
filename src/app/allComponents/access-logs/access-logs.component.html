@@ -1,0 +1,67 @@
+<div class="access-logs">
+<h1>Access Logs</h1>
+
+<!-- Filters -->
+<div class="filters">
+  <div class="date-filters">
+    <div class="form-group">
+      <label for="start-date">Start Date</label>
+      <input type="date" id="start-date" [(ngModel)]="startDate" />
+    </div>
+    <div class="form-group">
+      <label for="end-date">End Date</label>
+      <input type="date" id="end-date" [(ngModel)]="endDate" />
+    </div>
+  </div>
+
+  <div class="status-filter">
+    <label>Status Filter</label>
+    <div class="checkbox-group">
+      <div class="checkbox-item" *ngFor="let status of ['Granted', 'Denied', 'Pending']">
+        <input type="checkbox"
+               [id]="'status-' + status"
+               [checked]="statusFilter.includes(status)"
+               (change)="onStatusFilterChange(status, $event)">
+        <label [attr.for]="'status-' + status">{{ status }}</label>
+      </div>
+    </div>
+  </div>
+
+  <button (click)="fetchAccessLogs()" [disabled]="loadingLogs" class="fetch-btn">
+    {{ loadingLogs ? 'Loading...' : 'Fetch Logs' }}
+  </button>
+</div>
+
+<!-- Logs List -->
+<div class="logs-list">
+  <div *ngFor="let log of accessLogs" class="log-item">
+    <div class="log-status">
+      <div *ngIf="log.status === 'Granted'" class="status-icon success">✅</div>
+      <div *ngIf="log.status === 'Denied'" class="status-icon error">❌</div>
+      <div *ngIf="log.status === 'Pending'" class="status-icon pending">⏳</div>
+    </div>
+
+    <div class="log-details">
+      <div class="vehicle-info">
+        <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }} ({{ log.vehicle?.model || 'Unknown' }})
+      </div>
+
+      <div *ngIf="sessionStorage.getItem('user_role') === 'admin'" class="user-info">
+        <strong>User:</strong> {{ log.user?.name || 'Unknown' }} ({{ log.user?.email || 'Unknown' }})
+      </div>
+
+      <div class="time-info">
+        <div><strong>Entry Time:</strong> {{ log.entry_time | date:'yyyy-MM-dd HH:mm:ss' }}</div>
+        <div *ngIf="log.exit_time">
+          <strong>Exit Time:</strong> {{ log.exit_time | date:'yyyy-MM-dd HH:mm:ss' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="accessLogs.length === 0 && !loadingLogs" class="no-logs">
+    No logs found for the selected filters.
+  </div>
+</div>
+
+</div>

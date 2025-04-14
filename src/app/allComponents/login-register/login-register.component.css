@@ -71,13 +71,13 @@ button.btn-primary:hover {
 }
 
 button.btn-success {
-  
+
   background-color: #7b2ff7;
   color: #fff;
 }
 
 button.btn-success:hover {
- 
+
   background-color: #2e4358;
 }
 
@@ -109,16 +109,20 @@ button.btn-link:hover {
     padding: 20px;
     max-width: 350px;
   }
+
   h2 {
     font-size: 24px;
   }
+
   form h3 {
     font-size: 20px;
   }
+
   button {
     font-size: 14px;
     padding: 10px;
   }
+
   input.form-control {
     width: 90%;
   }

@@ -1,0 +1,77 @@
+<div class="process-video">
+  <h1>Process Gate Access Video</h1>
+
+  <!-- Message Display -->
+  <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
+    {{ message }}
+  </div>
+
+  <div class="video-uploads">
+    <div class="upload-section">
+      <h3>Upload Gate Video</h3>
+      <input type="file" accept="video/*" (change)="onGateVideoSelected($event)">
+      <video *ngIf="gateVideoUrl" [src]="gateVideoUrl" controls></video>
+    </div>
+
+    <div class="upload-section">
+      <h3>Upload Face Video (Optional)</h3>
+      <input type="file" accept="video/*" (change)="onFaceVideoSelected($event)">
+      <video *ngIf="faceVideoUrl" [src]="faceVideoUrl" controls></video>
+    </div>
+  </div>
+
+  <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
+    {{ processing ? 'Processing...' : 'Process Video for Access' }}
+  </button>
+
+  <!-- Processing Results -->
+  <div *ngIf="processResult" class="process-results">
+    <!-- License Plates Section -->
+    <div class="results-section">
+      <h3>License Plates Detected</h3>
+      <ng-container *ngIf="processResult.all_plates && processResult.all_plates.length > 0; else noPlates">
+        <ul>
+          <li *ngFor="let plate of processResult.all_plates">{{ plate }}</li>
+        </ul>
+      </ng-container>
+      <ng-template #noPlates>
+        <p class="warning-text">No license plates were detected in the video.</p>
+      </ng-template>
+    </div>
+
+    <!-- Face Recognition Results (if face video provided) -->
+    <div *ngIf="faceVideoFile" class="results-section">
+      <h3>Face Recognition Results</h3>
+      <div *ngIf="processResult.face_match" class="success-text">
+        ✅ Face matched with confidence: {{ processResult.face_confidence * 100 | number:'1.1-1' }}%
+      </div>
+      <div *ngIf="!processResult.face_match" class="warning-text">
+        ❌ No matching face found in the database.
+      </div>
+    </div>
+
+    <!-- Access Results -->
+    <div class="results-section access-result">
+      <div *ngIf="processResult.access_granted" class="success-text">
+        <h2>✅ ACCESS GRANTED</h2>
+
+        <div *ngIf="processResult.details" class="details-container">
+          <h3>Vehicle Information</h3>
+          <p><strong>Plate Number:</strong> {{ processResult.details.vehicle_info?.plate_number || 'N/A' }}</p>
+          <p><strong>Model:</strong> {{ processResult.details.vehicle_info?.model || 'N/A' }}</p>
+          <p><strong>Color:</strong> {{ processResult.details.vehicle_info?.color || 'N/A' }}</p>
+
+          <h3>User Information</h3>
+          <p><strong>Name:</strong> {{ processResult.details.user_info?.name || 'N/A' }}</p>
+          <p><strong>Email:</strong> {{ processResult.details.user_info?.email || 'N/A' }}</p>
+
+          <p><strong>Confidence:</strong> {{ processResult.confidence * 100 | number:'1.1-1' }}%</p>
+        </div>
+      </div>
+      <div *ngIf="!processResult.access_granted" class="error-text">
+        <h2>❌ ACCESS DENIED</h2>
+        <p>No matching vehicle found in the database.</p>
+      </div>
+    </div>
+  </div>
+</div>
