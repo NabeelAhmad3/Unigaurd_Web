@@ -11,7 +11,7 @@ const API_URL = 'http://localhost:8000';
   imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './access-logs.component.html',
   styleUrls: ['./access-logs.component.css'],
-  providers: [DatePipe] // ✅ required for DatePipe to work
+  providers: [DatePipe]
 })
 export class AccessLogsComponent {
   startDate: Date;

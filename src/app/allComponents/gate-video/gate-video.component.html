@@ -1,7 +1,6 @@
 <div class="process-video">
   <h1>Process Gate Access Video</h1>
 
-  <!-- Message Display -->
   <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
     {{ message }}
   </div>
@@ -23,10 +22,7 @@
   <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
     {{ processing ? 'Processing...' : 'Process Video for Access' }}
   </button>
-
-  <!-- Processing Results -->
   <div *ngIf="processResult" class="process-results">
-    <!-- License Plates Section -->
     <div class="results-section">
       <h3>License Plates Detected</h3>
       <ng-container *ngIf="processResult.all_plates && processResult.all_plates.length > 0; else noPlates">
@@ -39,7 +35,6 @@
       </ng-template>
     </div>
 
-    <!-- Face Recognition Results (if face video provided) -->
     <div *ngIf="faceVideoFile" class="results-section">
       <h3>Face Recognition Results</h3>
       <div *ngIf="processResult.face_match" class="success-text">
@@ -50,7 +45,6 @@
       </div>
     </div>
 
-    <!-- Access Results -->
     <div class="results-section access-result">
       <div *ngIf="processResult.access_granted" class="success-text">
         <h2>✅ ACCESS GRANTED</h2>

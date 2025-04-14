@@ -61,7 +61,6 @@ login() {
         sessionStorage.setItem('user_id', res.user_id);
         sessionStorage.setItem('user_name', res.name);
         sessionStorage.setItem('user_role', res.role);
-        // this.message = 'Login successful!';
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
@@ -91,11 +90,10 @@ login() {
     this.http.post<any>(`${this.apiUrl}/auth/register`, registerData)
       .subscribe({
         next: (res) => {
-          // this.message = 'Registration successful. Please login.';
-          // this.showLogin = true;
+          this.message = 'Registration successful. Please login.';
+          this.showLogin = true;
           // this.registerForm.reset();
           
-        this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           this.message = err.error.detail || 'Registration failed.';

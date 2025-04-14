@@ -16,20 +16,16 @@ const API_URL = 'http://localhost:8000';
 })
 export class ManageUsersComponent {
 
-  // --- User Management: Tabs & Messages ---
   userTabs: string[] = ['Register New User', 'View/Edit Users'];
   selectedUserTab: string = 'Register New User';
   message: string = '';
 
-  // --- Registration Form (Register New User Tab) ---
   regUserForm: FormGroup;
   regFile?: File;
 
-  // --- View/Edit Users ---
   searchCnic: string = '';
   users: any[] = [];
 
-  // --- Edit User State ---
   editingUserId: number | null = null;
   editingUserForm: FormGroup;
   editFile?: File;
@@ -37,8 +33,6 @@ export class ManageUsersComponent {
 
   constructor(private fb: FormBuilder, private http: HttpClient, private datePipe: DatePipe, private router: Router) {
 
-
-    // Registration form for new user (all fields required)
     this.regUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -50,7 +44,6 @@ export class ManageUsersComponent {
       color: ['', Validators.required]
     });
 
-    // Edit form (only editable fields; CNIC is assumed unchangeable)
     this.editingUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -60,7 +53,6 @@ export class ManageUsersComponent {
     });
   }
   
-  // --- Registration Tab: File selected handler ---
   onRegFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
@@ -68,7 +60,6 @@ export class ManageUsersComponent {
     }
   }
 
-  // --- Register New User Submission ---
   registerUser(): void {
     if (this.regUserForm.invalid || !this.regFile) {
       this.message = 'All fields are required, including face image.';
@@ -89,7 +80,6 @@ export class ManageUsersComponent {
         this.message = 'User registered successfully!';
         this.regUserForm.reset();
         this.regFile = undefined;
-        // Refresh dashboard summary or user list if needed:
         if (this.selectedUserTab === 'View/Edit Users') {
           this.getUsers();
         }
@@ -101,7 +91,6 @@ export class ManageUsersComponent {
     });
   }
 
-  // --- View/Edit Tab: Search & List Users ---
   getUsers(): void {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
@@ -133,7 +122,6 @@ export class ManageUsersComponent {
     this.getUsers();
   }
 
-  // --- Start editing a user ---
   startEditing(user: any): void {
     this.editingUserId = user.id;
     this.editingUserForm.patchValue({
@@ -151,14 +139,10 @@ export class ManageUsersComponent {
   }
 
   onEditFileSelected(event: any): void {
-    const formData = new FormData();
-    Object.entries(this.editingUserForm.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-    if (this.editFile) {
-      formData.append('face_image', this.editFile, this.editFile.name);
+    const file: File = event.target.files[0];
+    if (file) {
+      this.editFile = file;
     }
-    
   }
 
   updateUser(userId: number): void {

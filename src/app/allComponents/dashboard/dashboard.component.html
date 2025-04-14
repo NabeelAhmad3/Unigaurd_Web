@@ -1,17 +1,37 @@
+<!-- Include Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <div class="dashboard-container">
-  <div class="sidebar">
+  <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="company-logo">
-      <h2>Gate Access</h2>
+      <img src="assets/download.jpeg" alt="img" />
+      <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
     </div>
+
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <span class="material-icons">
+        {{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}
+      </span>
+    </button>
+
     <nav>
       <ul>
-        <li *ngFor="let page of pages" [class.active]="selectedPage === page" (click)="onChangePage(page)">
-          {{ page }}
+        <li *ngFor="let page of pages"
+            [class.active]="selectedPage === page"
+            (click)="onChangePage(page)">
+          <span class="material-icons">
+            {{ pageIcons[page] }}
+          </span>
+          <span class="label" *ngIf="!isSidebarCollapsed">{{ page }}</span>
         </li>
       </ul>
     </nav>
+
     <div class="sidebar-footer">
-      <button class="logout-btn" (click)="logout()">Logout</button>
+      <button class="logout-btn" (click)="logout()" *ngIf="!isSidebarCollapsed">
+        <span class="material-icons">exit_to_app</span>
+        Logout
+      </button>
     </div>
   </div>
 
@@ -33,11 +53,10 @@
         </div>
       </div>
     </div>
-    
+
     <app-manage-users *ngIf="selectedPage === 'Manage Users and Vehicles'"></app-manage-users>
     <app-gate-video *ngIf="selectedPage === 'Process Gate Video'"></app-gate-video>
     <app-access-logs *ngIf="selectedPage === 'Access Logs'"></app-access-logs>
     <app-settings *ngIf="selectedPage === 'Settings'"></app-settings>
   </div>
-
 </div>
