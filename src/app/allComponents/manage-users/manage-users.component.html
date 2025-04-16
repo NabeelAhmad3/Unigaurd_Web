@@ -98,6 +98,10 @@
                   <input type="text" id="edit-phone" formControlName="phone_number">
                 </div>
                 <div class="form-group">
+                  <label for="edit-cnic">cnic</label>
+                  <input type="text" id="edit-cnic" formControlName="cnic">
+                </div>
+                <div class="form-group">
                   <label for="edit-reg">Registration Number</label>
                   <input type="text" id="edit-reg" formControlName="registration_number">
                 </div>
@@ -107,11 +111,11 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="edit-face">Face Image (Optional)</label>
                 <input type="file" id="edit-face" (change)="onEditFileSelected($event)" accept="image/*">
                 <small *ngIf="editFile">Selected file: {{ editFile.name }}</small>
-              </div>
+              </div> -->
 
               <div class="edit-actions">
                 <button type="button" (click)="updateUser(user.id)" [disabled]="editingUserForm.invalid">Save</button>

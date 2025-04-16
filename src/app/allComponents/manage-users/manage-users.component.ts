@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -10,11 +10,11 @@ const API_URL = 'http://localhost:8000';
 
 @Component({
   selector: 'app-manage-users',
-  imports: [CommonModule,ReactiveFormsModule,FormsModule,],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,],
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.css'
 })
-export class ManageUsersComponent {
+export class ManageUsersComponent implements OnInit {
 
   userTabs: string[] = ['Register New User', 'View/Edit Users'];
   selectedUserTab: string = 'Register New User';
@@ -49,10 +49,14 @@ export class ManageUsersComponent {
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', Validators.required],
       registration_number: ['', Validators.required],
-      plate_number: ['', Validators.required]
+      plate_number: ['', Validators.required],
+      cnic:['',Validators.required]
     });
   }
-  
+  ngOnInit(): void {
+    this.getUsers();
+  }
+
   onRegFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
@@ -116,7 +120,6 @@ export class ManageUsersComponent {
       }
     });
   }
-
   resetSearch(): void {
     this.searchCnic = '';
     this.getUsers();
@@ -127,23 +130,24 @@ export class ManageUsersComponent {
     this.editingUserForm.patchValue({
       name: user.name,
       email: user.email,
+      cnic:user.cnic,
       phone_number: user.phone_number,
       registration_number: user.registration_number,
       plate_number: user.plate_number
     });
-    this.editFile = undefined;
+    // this.editFile = undefined;
   }
 
   cancelEditing(): void {
     this.editingUserId = null;
   }
 
-  onEditFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.editFile = file;
-    }
-  }
+  // onEditFileSelected(event: any): void {
+  //   const file: File = event.target.files[0];
+  //   if (file) {
+  //     this.editFile = file;
+  //   }
+  // }
 
   updateUser(userId: number): void {
     const token = sessionStorage.getItem('token');
@@ -154,8 +158,11 @@ export class ManageUsersComponent {
       email: this.editingUserForm.value.email,
       phone_number: this.editingUserForm.value.phone_number,
       registration_number: this.editingUserForm.value.registration_number,
-      face_embedding: null
+      cnic: this.editingUserForm.value.cnic,
+      plate_number: this.editingUserForm.value.plate_number,
+      // face_embedding: this.editingUserForm.value.face_embedding || "",
     };
+
 
     this.http.put<any>(`${API_URL}/userdata/${userId}`, updatedData, { headers }).subscribe({
       next: () => {
@@ -184,5 +191,5 @@ export class ManageUsersComponent {
       }
     });
   }
-  
+
 }
