@@ -1,13 +1,21 @@
+.full-page-background {
+  height: 100vh;
+  width: 100%;
+  background: url('/assets/2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .container {
   max-width: 450px;
   margin: 60px auto;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background-color: #2c3e50;
-  color: #fff;
+  background: rgb(0 103 126 / 64%);;
 }
-
 h2 {
   text-align: center;
   font-size: 28px;
@@ -35,19 +43,17 @@ label {
 }
 
 input.form-control {
-  width: 100%;
-  padding: 12px;
+  width: 96%;
+  padding: 8px;
   margin: 8px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
   background-color: #f4f4f4;
   font-size: 16px;
-  transition: all 0.3s ease;
 }
 
 input.form-control:focus {
   outline: none;
-  border-color: #7b2ff7;
   background-color: #fff;
 }
 

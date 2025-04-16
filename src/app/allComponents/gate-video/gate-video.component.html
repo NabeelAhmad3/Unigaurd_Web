@@ -19,6 +19,11 @@
     </div>
   </div>
 
+  <div *ngIf="processing" class="loader-container">
+    <div class="loader"></div>
+    <p>Analyzing video, please wait...</p>
+  </div>
+  
   <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
     {{ processing ? 'Processing...' : 'Process Video for Access' }}
   </button>

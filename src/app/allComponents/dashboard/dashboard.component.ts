@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -47,9 +42,6 @@ export class DashboardComponent implements OnInit {
   registeredVehicles: number = 0;
   successfulAccess: number = 0;
   deniedAccess: number = 0;
-
-  userTabs: string[] = ['Register New User', 'View/Edit Users'];
-  selectedUserTab: string = 'Register New User';
   message: string = '';
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -65,9 +57,6 @@ export class DashboardComponent implements OnInit {
   onChangePage(page: string): void {
     this.selectedPage = page;
     this.message = '';
-    if (page === 'Manage Users and Vehicles') {
-      this.selectedUserTab = 'Register New User';
-    }
   }
 
   logout(): void {
@@ -105,5 +94,10 @@ export class DashboardComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
+  
+  isSidebarOpen = false;
 
+  toggleSidebarMobile() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }

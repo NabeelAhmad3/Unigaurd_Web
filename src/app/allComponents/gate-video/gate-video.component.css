@@ -97,3 +97,23 @@ button:disabled {
   border-radius: 4px;
   margin-bottom: 15px;
 }
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0 ;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #2e4358;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
