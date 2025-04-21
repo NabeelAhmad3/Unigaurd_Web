@@ -94,10 +94,5 @@ export class DashboardComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
-  
-  isSidebarOpen = false;
 
-  toggleSidebarMobile() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
 }

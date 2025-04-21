@@ -1,11 +1,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<button class="mobile-toggle-btn" (click)="toggleSidebarMobile()">
-  <span class="material-icons">menu</span>
-</button>
-
 <div class="dashboard-container">
-  <div class="sidebar" [ngClass]="{ 'collapsed': isSidebarCollapsed, 'open': isSidebarOpen }">
+  <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="company-logo">
       <img src="assets/download.jpeg" alt="img" />
       <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
@@ -16,8 +12,6 @@
         {{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}
       </span>
     </button>
-
-    <div class="backdrop" *ngIf="isSidebarOpen" (click)="toggleSidebarMobile()"></div>
 
     <nav>
       <ul>
