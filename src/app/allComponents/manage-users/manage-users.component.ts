@@ -41,14 +41,19 @@ export class ManageUsersComponent implements OnInit {
       registration_number: ['', Validators.required],
       plate_number: ['', Validators.required],
       model: ['', Validators.required],
-      color: ['', Validators.required]
+      color: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required]
+    }, {
+      validators: this.passwordsMatchValidator
     });
-
+    
     this.editingUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone_number: ['', Validators.required],
       registration_number: ['', Validators.required],
+      password: ['', Validators.required],
       plate_number: ['', Validators.required],
       cnic:['',Validators.required]
     });
@@ -66,19 +71,21 @@ export class ManageUsersComponent implements OnInit {
 
   registerUser(): void {
     if (this.regUserForm.invalid || !this.regFile) {
-      this.message = 'All fields are required, including face image.';
+      this.message = 'All fields are required, including face image and valid credentials.';
       return;
     }
-
+  
     const formData = new FormData();
     Object.entries(this.regUserForm.value).forEach(([key, value]) => {
-      formData.append(key, value as string);
+      if (key !== 'confirmPassword') { // we don't need to send confirmPassword
+        formData.append(key, value as string);
+      }
     });
     formData.append('face_image', this.regFile, this.regFile.name);
-
+  
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-
+  
     this.http.post<any>(`${API_URL}/userdata/`, formData, { headers }).subscribe({
       next: (res) => {
         this.message = 'User registered successfully!';
@@ -94,7 +101,13 @@ export class ManageUsersComponent implements OnInit {
       }
     });
   }
-
+  
+  passwordsMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+  
   getUsers(): void {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
@@ -133,6 +146,7 @@ export class ManageUsersComponent implements OnInit {
       cnic:user.cnic,
       phone_number: user.phone_number,
       registration_number: user.registration_number,
+      password:user.password,
       plate_number: user.plate_number
     });
     // this.editFile = undefined;
@@ -158,9 +172,11 @@ export class ManageUsersComponent implements OnInit {
       email: this.editingUserForm.value.email,
       phone_number: this.editingUserForm.value.phone_number,
       registration_number: this.editingUserForm.value.registration_number,
+      passsword:this.editingUserForm.value.password,
       cnic: this.editingUserForm.value.cnic,
       plate_number: this.editingUserForm.value.plate_number,
       // face_embedding: this.editingUserForm.value.face_embedding || "",
+      
     };
 
 
