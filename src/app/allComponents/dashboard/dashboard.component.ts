@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
 
   selectedPage = 'Dashboard';
 
+  accessLogs: any[] = [];
   registeredVehicles: number = 0;
   successfulAccess: number = 0;
   deniedAccess: number = 0;
@@ -76,17 +77,20 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.http.get<any>(`${API_URL}/access`, { headers }).subscribe({
+    this.http.get<any[]>(`${API_URL}/access`, { headers }).subscribe({
       next: (res) => {
+        console.log(res);
         if (Array.isArray(res)) {
-          this.successfulAccess = res.filter((log: any) => log.status === 'Granted').length;
-          this.deniedAccess = res.filter((log: any) => log.status === 'Denied').length;
+          this.accessLogs = res;
+          this.successfulAccess = res.filter((log) => log.status === 'Granted').length;
+          this.deniedAccess = res.filter((log) => log.status === 'Denied').length;
         }
       },
       error: (err) => {
         console.error('Error fetching access logs:', err);
       }
     });
+    
   }
 
   isSidebarCollapsed = false;

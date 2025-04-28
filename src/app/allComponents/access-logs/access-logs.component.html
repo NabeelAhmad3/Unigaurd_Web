@@ -41,18 +41,11 @@
 
     <div class="log-details">
       <div class="vehicle-info">
-        <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }} ({{ log.vehicle?.model || 'Unknown' }})
-      </div>
-
-      <div *ngIf="sessionStorage.getItem('user_role') === 'admin'" class="user-info">
-        <strong>User:</strong> {{ log.user?.name || 'Unknown' }} ({{ log.user?.email || 'Unknown' }})
-      </div>
-
-      <div class="time-info">
-        <div><strong>Entry Time:</strong> {{ log.entry_time | date:'yyyy-MM-dd HH:mm:ss' }}</div>
-        <div *ngIf="log.exit_time">
-          <strong>Exit Time:</strong> {{ log.exit_time | date:'yyyy-MM-dd HH:mm:ss' }}
-        </div>
+        <strong>Email:</strong>{{log.vehicle?.email||'Unknown'}}
+        <strong>CNIC:</strong>{{log.vehicle?.cnic||'Unknown'}}
+        <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }}
+        <strong>Model:</strong>{{ log.vehicle?.model || 'Unknown' }}
+        <strong>Color:</strong>{{log.vehicle?.color|| 'Unknown'}}
       </div>
     </div>
   </div>

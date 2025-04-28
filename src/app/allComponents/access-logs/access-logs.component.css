@@ -18,10 +18,12 @@
   gap: 15px;
   margin-top: 5px;
 }
+
 h1 {
   margin-bottom: 20px;
   color: #2c3e50;
 }
+
 .checkbox-item {
   display: flex;
   align-items: center;
@@ -64,7 +66,6 @@ h1 {
   color: #7f8c8d;
 }
 
-/* Forms */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -119,7 +120,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Messages */
 .success-message {
   background-color: #d4edda;
   color: #155724;
@@ -135,13 +135,45 @@ button:disabled {
   border-radius: 4px;
   margin-bottom: 15px;
 }
-@media (max-width: 768px) {
-    input[type="date"] {
-      width: 75%;
-      padding: 8px;
-    }
 
-    .filters {
-      padding: 2px;
-    }
+@media (max-width: 768px) {
+  input[type="date"] {
+    width: 75%;
+    padding: 8px;
+  }
+
+  .filters {
+    padding: 2px;
+
+  }
+
+  .vehicle-info {
+    font-size: 14px;
+    padding: 15px;
+  }
+}
+
+.vehicle-info {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-family: 'Arial', sans-serif;
+}
+
+.vehicle-info strong {
+  color: #4CAF50;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.vehicle-info span {
+  color: #555;
+}
+
+.vehicle-info .unknown {
+  color: #f44336;
+  font-style: italic;
 }

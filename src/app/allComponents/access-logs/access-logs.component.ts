@@ -20,7 +20,7 @@ export class AccessLogsComponent {
   accessLogs: any[] = [];
   loadingLogs: boolean = false;
   message: string = '';
-sessionStorage: any;
+  sessionStorage: any;
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {
     const today = new Date();
@@ -103,5 +103,5 @@ sessionStorage: any;
       }));
     });
   }
-  
+
 }

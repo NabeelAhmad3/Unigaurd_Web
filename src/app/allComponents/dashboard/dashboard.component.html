@@ -15,9 +15,7 @@
 
     <nav>
       <ul>
-        <li *ngFor="let page of pages"
-            [class.active]="selectedPage === page"
-            (click)="onChangePage(page)">
+        <li *ngFor="let page of pages" [class.active]="selectedPage === page" (click)="onChangePage(page)">
           <span class="material-icons">
             {{ pageIcons[page] }}
           </span>
@@ -51,6 +49,26 @@
           <div class="count">{{ deniedAccess }}</div>
         </div>
       </div>
+      <table *ngIf="accessLogs.length > 0" border="1">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Vehicle_id</th>
+            <th>Access Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let log of accessLogs">
+            <td>{{ log.user_id }}</td>
+            <td>{{log.vehicle_id}}</td>
+            <td>{{ log.entry_time | date:'short' }}</td>
+            <td>{{ log.status }}</td>
+          </tr>
+        </tbody>
+
+        <p *ngIf="accessLogs.length === 0">No access logs available.</p>
+      </table>
     </div>
 
     <app-manage-users *ngIf="selectedPage === 'Manage Users and Vehicles'"></app-manage-users>
