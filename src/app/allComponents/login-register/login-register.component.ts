@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   standalone:true,
   selector: 'app-login-register',
-  imports: [CommonModule,ReactiveFormsModule,HttpClientModule],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './login-register.component.html',
   styleUrl: './login-register.component.css'
 })

@@ -1,0 +1,109 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div class="dashboard-container">
+  <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+    <div class="company-logo">
+      <img src="assets/download.jpeg" alt="Company Logo" />
+      <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
+    </div>
+
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <span class="material-icons">
+        {{ isSidebarCollapsed ? 'chevron_right' : 'chevron_left' }}
+      </span>
+    </button>
+
+    <nav>
+      <ul>
+        <li *ngFor="let page of pages" [class.active]="selectedPage === page" (click)="onChangePage(page)">
+          <span class="material-icons">
+            {{ pageIcons[page] }}
+          </span>
+          <span class="label" *ngIf="!isSidebarCollapsed">{{ page }}</span>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="content" *ngIf="selectedPage === 'User Dashboard'">
+    <div class="form-group">
+      <input type="text" placeholder="Search by CNIC" [(ngModel)]="searchCnic">
+      <button (click)="getUsers()">Search</button>
+      <button (click)="resetSearch()" class="secondary-btn">Reset</button>
+    </div>
+
+    <div *ngIf="message" class="message">{{ message }}</div>
+
+    <div *ngFor="let user of users" class="user-card">
+      <h3>{{ user.name }}</h3>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>{{ user.registration_number }}</strong></p>
+      <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+      <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+      <p><strong>Vehicle:</strong> ({{ user.plate_number }})</p>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="selectedPage === 'Rules Page'">
+    <h1>University Security System Access Policy</h1>
+
+    <div class="section">
+      <h2>Purpose</h2>
+      <p>To ensure the safe and secure use of the university's security system by authorized users, both within the
+        campus and remotely, during specific hours.</p>
+    </div>
+
+    <div class="section">
+      <h2>Access Rules</h2>
+      <ul>
+        <li><strong>Authorized Users:</strong> Only registered and authorized individuals (students, staff, and faculty)
+          may access the security system.</li>
+        <li><strong>Access Hours:</strong> Users can access the security system <strong>only between 7:00 AM and 10:00
+            PM</strong>.</li>
+        <li><strong>Login Credentials:</strong> Users must log in with their unique username and password. Sharing login
+          credentials is strictly prohibited.</li>
+        <li><strong>Remote Access:</strong> Users may access the system remotely through a secure network only during
+          the authorized access hours.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Usage Guidelines</h2>
+      <ul>
+        <li><strong>Monitoring:</strong> Users may monitor entrances, exits, and university premises but should not
+          interfere with or tamper with security devices.</li>
+        <li><strong>Reporting Incidents:</strong> Any suspicious activity must be reported to the security department
+          immediately.</li>
+        <li><strong>Device Restrictions:</strong> Only authorized devices may be used for monitoring security.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Conduct Expectations</h2>
+      <ul>
+        <li><strong>Respect for Privacy:</strong> Users must respect others' privacy and not access restricted areas or
+          footage without permission.</li>
+        <li><strong>Compliance with Law:</strong> All actions performed using the system must comply with laws and
+          university rules.</li>
+        <li><strong>Data Security:</strong> Information accessed through the system is confidential and should not be
+          shared without permission.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Disciplinary Action</h2>
+      <ul>
+        <li><strong>Unauthorized Access:</strong> Any attempt to access the system outside authorized hours or without
+          proper credentials will result in suspension.</li>
+        <li><strong>Tampering or Misuse:</strong> Tampering with the system or misusing it will result in suspension and
+          further action.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Contact Information</h2>
+      <p>For technical assistance or to report suspicious activities, please contact the <strong>University Security
+          Office</strong> at [phone/email].</p>
+    </div>
+  </div>
+</div>
