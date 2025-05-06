@@ -3,7 +3,7 @@
 <div class="dashboard-container">
   <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="company-logo">
-      <img src="assets/download.jpeg" alt="img" />
+      <img src="assets/icon.png" alt="img" />
       <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
     </div>
 
@@ -35,6 +35,7 @@
   <div class="content">
     <div *ngIf="selectedPage === 'Dashboard'" class="dashboard-summary">
       <h1>Dashboard</h1>
+
       <div class="summary-cards">
         <div class="card">
           <h3>Registered Vehicles</h3>
@@ -49,27 +50,36 @@
           <div class="count">{{ deniedAccess }}</div>
         </div>
       </div>
-      <table *ngIf="accessLogs.length > 0" border="1">
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Vehicle_id</th>
-            <th>Access Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let log of accessLogs">
-            <td>{{ log.user_id }}</td>
-            <td>{{log.vehicle_id}}</td>
-            <td>{{ log.entry_time | date:'short' }}</td>
-            <td>{{ log.status }}</td>
-          </tr>
-        </tbody>
+      <div>
+        <table border="1">
+          <thead>
+            <tr>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Cnic</th>
+              <th>Reg-No</th>
+              <th>Plate-No</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phone_number }}</td>
+              <td>{{ user.cnic }}</td>
+              <td>{{ user.registration_number }}</td>
+              <td>{{ user.plate_number }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <p *ngIf="accessLogs.length === 0">No access logs available.</p>
-      </table>
+      <ng-template #noLogs>
+        <p>No access logs available.</p>
+      </ng-template>
     </div>
+
 
     <app-manage-users *ngIf="selectedPage === 'Manage Users and Vehicles'"></app-manage-users>
     <app-gate-video *ngIf="selectedPage === 'Process Gate Video'"></app-gate-video>

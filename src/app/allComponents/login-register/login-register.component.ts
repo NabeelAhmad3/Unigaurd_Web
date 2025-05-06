@@ -61,7 +61,7 @@ login() {
         sessionStorage.setItem('user_id', res.user_id);
         sessionStorage.setItem('user_name', res.name);
         sessionStorage.setItem('user_role', res.role);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin-dashboard']);
       },
       error: (err) => {
         console.error('Login error:', err);

@@ -24,7 +24,7 @@ label {
 }
 
 input[type="password"] {
-    width: 90%;
+    width: 60%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;

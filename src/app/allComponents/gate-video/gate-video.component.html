@@ -13,7 +13,7 @@
     </div>
 
     <div class="upload-section">
-      <h3>Upload Face Video (Optional)</h3>
+      <h3>Upload Face Video</h3>
       <input type="file" accept="video/*" (change)="onFaceVideoSelected($event)">
       <video *ngIf="faceVideoUrl" [src]="faceVideoUrl" controls></video>
     </div>
@@ -23,53 +23,42 @@
     <div class="loader"></div>
     <p>Analyzing video, please wait...</p>
   </div>
-  
+
   <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
     {{ processing ? 'Processing...' : 'Process Video for Access' }}
   </button>
   <div *ngIf="processResult" class="process-results">
-    <div class="results-section">
-      <h3>License Plates Detected</h3>
-      <ng-container *ngIf="processResult.all_plates && processResult.all_plates.length > 0; else noPlates">
-        <ul>
-          <li *ngFor="let plate of processResult.all_plates">{{ plate }}</li>
-        </ul>
-      </ng-container>
-      <ng-template #noPlates>
-        <p class="warning-text">No license plates were detected in the video.</p>
-      </ng-template>
+
+    <div *ngIf="processResult.access_granted" class="success-text">
+      <h2>✅ ACCESS GRANTED</h2>
+    </div>
+    <div *ngIf="!processResult.access_granted" class="error-text">
+      <h2>❌ ACCESS DENIED</h2>
     </div>
 
     <div *ngIf="faceVideoFile" class="results-section">
       <h3>Face Recognition Results</h3>
       <div *ngIf="processResult.face_match" class="success-text">
-        ✅ Face matched with confidence: {{ processResult.face_confidence * 100 | number:'1.1-1' }}%
+        ✅ Face Matched
       </div>
       <div *ngIf="!processResult.face_match" class="warning-text">
-        ❌ No matching face found in the database.
+        ❌ No Matching Face
       </div>
     </div>
 
-    <div class="results-section access-result">
-      <div *ngIf="processResult.access_granted" class="success-text">
-        <h2>✅ ACCESS GRANTED</h2>
+    <div *ngIf="gateVideoFile" class="results-section">
+      <h3>Car Plate Results</h3>
+      <div *ngIf="processResult.details" class="details-container">
+        ✅ Car Plate Matched
+        <h3>User Information</h3>
+        <p><strong>Name:</strong> {{ processResult.details.user_info?.name || 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ processResult.details.user_info?.email || 'N/A' }}</p>
+        <h3>Vehicle Information</h3>
+        <p><strong>Plate Number:</strong> {{ processResult.details.vehicle_info?.plate_number || 'N/A' }}</p>
+        <p><strong>Model:</strong> {{ processResult.details.vehicle_info?.model || 'N/A' }}</p>
+        <p><strong>Color:</strong> {{ processResult.details.vehicle_info?.color || 'N/A' }}</p>
 
-        <div *ngIf="processResult.details" class="details-container">
-          <h3>Vehicle Information</h3>
-          <p><strong>Plate Number:</strong> {{ processResult.details.vehicle_info?.plate_number || 'N/A' }}</p>
-          <p><strong>Model:</strong> {{ processResult.details.vehicle_info?.model || 'N/A' }}</p>
-          <p><strong>Color:</strong> {{ processResult.details.vehicle_info?.color || 'N/A' }}</p>
 
-          <h3>User Information</h3>
-          <p><strong>Name:</strong> {{ processResult.details.user_info?.name || 'N/A' }}</p>
-          <p><strong>Email:</strong> {{ processResult.details.user_info?.email || 'N/A' }}</p>
-
-          <p><strong>Confidence:</strong> {{ processResult.confidence * 100 | number:'1.1-1' }}%</p>
-        </div>
-      </div>
-      <div *ngIf="!processResult.access_granted" class="error-text">
-        <h2>❌ ACCESS DENIED</h2>
-        <p>No matching vehicle found in the database.</p>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
@@ -44,6 +44,7 @@ export class DashboardComponent implements OnInit {
   successfulAccess: number = 0;
   deniedAccess: number = 0;
   message: string = '';
+  users: any[] = [];
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -53,6 +54,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDashboardSummary();
+    this.getUsers();
+
   }
 
   onChangePage(page: string): void {
@@ -90,7 +93,28 @@ export class DashboardComponent implements OnInit {
         console.error('Error fetching access logs:', err);
       }
     });
-    
+
+
+  }
+  getUsers(): void {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    let url = `${API_URL}/userdata/`;
+
+    this.http.get<any>(url, { headers }).subscribe({
+      next: (res) => {
+        if (Array.isArray(res)) {
+          this.users = res;
+        } else {
+          this.users = [];
+        }
+        this.message = this.users.length === 0 ? 'No users found.' : '';
+      },
+      error: (err) => {
+        this.message = 'Failed to fetch users.';
+        console.error('Error fetching users:', err);
+      }
+    });
   }
 
   isSidebarCollapsed = false;
