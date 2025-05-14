@@ -177,18 +177,24 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
-  .tab-content[_ngcontent-ng-c3016051276] {
-    width: 300px;
-    padding: 7px;
-
-  }
 
   input[type="text"],
   input[type="email"],
   input[type="password"],
   input[type="date"] {
-    width: 90%;
+    width: 80%;
     padding: 8px;
   }
 
+  .tab-content {
+    padding: 2px;
+  }
+}
+
+.user-info img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
 }

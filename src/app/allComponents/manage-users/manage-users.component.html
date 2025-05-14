@@ -70,6 +70,7 @@
         <div *ngFor="let user of users" class="user-card">
           <ng-container *ngIf="editingUserId !== user.id">
             <div class="user-info">
+              <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
               <h3>{{ user.name }}</h3>
               <p><strong>Email:</strong> {{ user.email }}</p>
               <p><strong>Phone:</strong> {{ user.phone_number }}</p>

@@ -9,5 +9,5 @@ export const routes: Routes = [
     { path: 'login', component: LoginRegisterComponent },
     { path: 'admin-dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
     { path: 'user-dashboard', component: UserDetailComponent },
-    { path: '', redirectTo: '/user-dashboard', pathMatch: 'full' }
+    { path: '', redirectTo: '/admin-dashboard', pathMatch: 'full' }
 ];

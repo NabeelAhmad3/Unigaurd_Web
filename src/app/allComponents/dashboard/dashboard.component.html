@@ -51,29 +51,30 @@
         </div>
       </div>
       <div>
-        <table border="1">
-          <thead>
-            <tr>
-              <th>User Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Cnic</th>
-              <th>Reg-No</th>
-              <th>Plate-No</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let user of users">
-              <td>{{ user.name }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.phone_number }}</td>
-              <td>{{ user.cnic }}</td>
-              <td>{{ user.registration_number }}</td>
-              <td>{{ user.plate_number }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>CNIC</th>
+        <th>Reg-No</th>
+        <th>Plate-No</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td data-label="User Name">{{ user.name }}</td>
+        <td data-label="Email">{{ user.email }}</td>
+        <td data-label="Phone">{{ user.phone_number }}</td>
+        <td data-label="CNIC">{{ user.cnic }}</td>
+        <td data-label="Reg-No">{{ user.registration_number }}</td>
+        <td data-label="Plate-No">{{ user.plate_number }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 
       <ng-template #noLogs>
         <p>No access logs available.</p>

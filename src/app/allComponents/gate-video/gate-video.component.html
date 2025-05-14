@@ -1,64 +1,86 @@
-<div class="process-video">
+<!-- Message display -->
+<div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
+  {{ message }}
+</div>
+<div class="process-video-container">
   <h1>Process Gate Access Video</h1>
+  <!-- Upload Section -->
+  <div class="upload-section">
+    <label for="gateVideo" class="upload-btn">Click To Upload Gate
+      Video</label>
+    <input type="file" id="gateVideo" accept="video/*" (change)="onGateVideoSelected($event)" style="display: none;" />
 
-  <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
-    {{ message }}
+    <label for="faceVideo" class="upload-btn">Click To Upload Face Video</label>
+    <input type="file" id="faceVideo" accept="video/*" (change)="onFaceVideoSelected($event)" style="display: none;" />
   </div>
 
-  <div class="video-uploads">
-    <div class="upload-section">
-      <h3>Upload Gate Video</h3>
-      <input type="file" accept="video/*" (change)="onGateVideoSelected($event)">
-      <video *ngIf="gateVideoUrl" [src]="gateVideoUrl" controls></video>
+  <!-- Video Preview -->
+  <div class="video-preview">
+    <div *ngIf="gateVideoUrl">
+      <h3>Gate Video Preview</h3>
+      <video width="300" controls [src]="gateVideoUrl"></video>
     </div>
 
-    <div class="upload-section">
-      <h3>Upload Face Video</h3>
-      <input type="file" accept="video/*" (change)="onFaceVideoSelected($event)">
-      <video *ngIf="faceVideoUrl" [src]="faceVideoUrl" controls></video>
+    <div *ngIf="faceVideoUrl">
+      <h3>Face Video Preview</h3>
+      <video width="300" controls [src]="faceVideoUrl"></video>
     </div>
   </div>
 
-  <div *ngIf="processing" class="loader-container">
-    <div class="loader"></div>
-    <p>Analyzing video, please wait...</p>
-  </div>
-
-  <button (click)="processGateVideo()" [disabled]="!gateVideoFile || processing" class="process-btn">
-    {{ processing ? 'Processing...' : 'Process Video for Access' }}
+  <!-- Process Button -->
+  <button (click)="processGateVideo()" [disabled]="processing">
+    {{ processing ? 'Processing...' : 'Process Videos for Access' }}
   </button>
-  <div *ngIf="processResult" class="process-results">
 
-    <div *ngIf="processResult.access_granted" class="success-text">
-      <h2>✅ ACCESS GRANTED</h2>
+  <!-- Results Section -->
+  <div *ngIf="processResult" class="results">
+    <h2>Access Decision</h2>
+    <div *ngIf="processResult.access_granted; else denied">
+      <p class="success-message">✅ ACCESS GRANTED</p>
+      <p>Both license plate and face were successfully verified.</p>
     </div>
-    <div *ngIf="!processResult.access_granted" class="error-text">
-      <h2>❌ ACCESS DENIED</h2>
-    </div>
+    <ng-template #denied>
+      <p class="error-message">❌ ACCESS DENIED</p>
+      <p *ngIf="!processResult.plate_match && !processResult.face_match">Neither license plate nor face matched records.
+      </p>
+      <p *ngIf="!processResult.plate_match && processResult.face_match">License plate not recognized.</p>
+      <p *ngIf="!processResult.face_match && processResult.plate_match">Face not recognized.</p>
+      <p *ngIf="processResult.face_mismatch">Face does not match the vehicle owner.</p>
+    </ng-template>
 
-    <div *ngIf="faceVideoFile" class="results-section">
-      <h3>Face Recognition Results</h3>
-      <div *ngIf="processResult.face_match" class="success-text">
-        ✅ Face Matched
+    <!-- Confidence Results -->
+    <div class="recognition-columns">
+      <div class="column">
+        <h3>License Plate Recognition</h3>
+        <p *ngIf="processResult.plate_match" class="success-message">
+          ✅ Plate Matched
+        </p>
+        <p *ngIf="!processResult.plate_match" class="error-message">❌ No matching license plate found.</p>
       </div>
-      <div *ngIf="!processResult.face_match" class="warning-text">
-        ❌ No Matching Face
+
+      <div class="column">
+        <h3>Face Recognition</h3>
+        <p *ngIf="processResult.face_match" class="success-message">
+          ✅ Face Matched
+        </p>
+        <p *ngIf="!processResult.face_match" class="error-message">❌ No matching face found.</p>
       </div>
     </div>
 
-    <div *ngIf="gateVideoFile" class="results-section">
-      <h3>Car Plate Results</h3>
-      <div *ngIf="processResult.details" class="details-container">
-        ✅ Car Plate Matched
+    <!-- Access Details -->
+    <div *ngIf="processResult.details">
+      <h3>Access Details</h3>
+      <div class="detail-section">
         <h3>User Information</h3>
         <p><strong>Name:</strong> {{ processResult.details.user_info?.name || 'N/A' }}</p>
         <p><strong>Email:</strong> {{ processResult.details.user_info?.email || 'N/A' }}</p>
+      </div>
+
+      <div class="detail-section">
         <h3>Vehicle Information</h3>
         <p><strong>Plate Number:</strong> {{ processResult.details.vehicle_info?.plate_number || 'N/A' }}</p>
         <p><strong>Model:</strong> {{ processResult.details.vehicle_info?.model || 'N/A' }}</p>
         <p><strong>Color:</strong> {{ processResult.details.vehicle_info?.color || 'N/A' }}</p>
-
-
       </div>
     </div>
   </div>

@@ -82,7 +82,6 @@ export class DashboardComponent implements OnInit {
 
     this.http.get<any[]>(`${API_URL}/access`, { headers }).subscribe({
       next: (res) => {
-        console.log(res);
         if (Array.isArray(res)) {
           this.accessLogs = res;
           this.successfulAccess = res.filter((log) => log.status === 'Granted').length;

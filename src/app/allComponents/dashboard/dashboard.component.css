@@ -171,29 +171,6 @@ h1 {
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .dashboard-container {
-    flex-direction: row;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-  }
-
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-
-  table {
-    font-size: 12px;
-  }
-
-  th, td {
-    padding: 8px;
-  }
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -203,35 +180,60 @@ table {
   overflow: hidden;
 }
 
-th {
-  padding: 10px;
-  text-align: left;
-  font-size: 16px;
-}
-
-
-
-td {
+th, td {
   padding: 10px;
   text-align: left;
   font-size: 14px;
+}
+
+th {
+  font-size: 16px;
+  background-color: #f9f9f9;
 }
 
 td:nth-child(4) {
   font-weight: bold;
 }
 
-td:nth-child(4):contains('Granted') {
-  color: green;
-}
-
-td:nth-child(4):contains('Denied') {
-  color: red;
-}
-
 tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+
+  .sidebar {
+  width: 372px;
+  
+}
+  thead {
+    display: none;
+  }
+
+  table, tbody, tr, td {
+    display: block;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  td {
+    padding: 10px;
+    text-align: right;
+    position: relative;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 5px;
+    font-weight: bold;
+    text-align: left;
+  }
 }
 
 p {
@@ -240,3 +242,4 @@ p {
   color: #555;
   margin-top: 20px;
 }
+

@@ -152,6 +152,7 @@ export class ManageUsersComponent implements OnInit {
   //   }
   // }
 
+
   updateUser(userId: number): void {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
@@ -164,7 +165,6 @@ export class ManageUsersComponent implements OnInit {
       cnic: this.editingUserForm.value.cnic,
       plate_number: this.editingUserForm.value.plate_number,
       // face_embedding: this.editingUserForm.value.face_embedding || "",
-      
     };
 
 

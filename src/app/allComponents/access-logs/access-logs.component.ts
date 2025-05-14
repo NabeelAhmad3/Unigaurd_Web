@@ -16,17 +16,19 @@ const API_URL = 'http://localhost:8000';
 export class AccessLogsComponent {
   startDate: Date;
   endDate: Date;
-  statusFilter: string[] = ['Granted', 'Denied', 'Pending'];
+  statusFilter: string[] = ['Granted', 'Denied'];
   accessLogs: any[] = [];
   loadingLogs: boolean = false;
   message: string = '';
-  sessionStorage: any;
+  userRole: string = '';
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {
     const today = new Date();
     this.endDate = today;
     this.startDate = new Date(today);
     this.startDate.setDate(today.getDate() - 30);
+
+    this.userRole = sessionStorage.getItem('user_role') || ''; // Add your role fetch logic
     this.fetchAccessLogs();
   }
 
@@ -55,9 +57,7 @@ export class AccessLogsComponent {
           );
         });
 
-        this.accessLogs = filteredLogs;
-        this.enrichLogsWithDetails(filteredLogs);
-        this.loadingLogs = false;
+        this.enrichLogsWithDetails(filteredLogs, headers);
       },
       error: (err) => {
         console.error('Error fetching access logs:', err);
@@ -67,20 +67,22 @@ export class AccessLogsComponent {
     });
   }
 
-  enrichLogsWithDetails(logs: any[]): void {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+  enrichLogsWithDetails(logs: any[], headers: HttpHeaders): void {
+   const vehicleIds = [...new Set(logs.map(log => log.vehicle_id).filter(id => id))];
 
-    const vehicleIds = [...new Set(logs.map(log => log.vehicle_id))];
-    const userIds = [...new Set(logs.map(log => log.user_id))];
+    const userIds = [...new Set(logs.map(log => log.user_id).filter(id => id))];
+
 
     const vehicleRequests = vehicleIds.map(id =>
       this.http.get(`${API_URL}/vehicles/${id}`, { headers }).toPromise().then(res => ({ id, data: res }))
     );
 
-    const userRequests = userIds.map(id =>
-      this.http.get(`${API_URL}/users/${id}`, { headers }).toPromise().then(res => ({ id, data: res }))
-    );
+    let userRequests: Promise<any>[] = [];
+    if (this.userRole === 'admin') {
+      userRequests = userIds.map(id =>
+        this.http.get(`${API_URL}/users/${id}`, { headers }).toPromise().then(res => ({ id, data: res }))
+      );
+    }
 
     Promise.all([...vehicleRequests, ...userRequests]).then(results => {
       const vehicleMap = new Map<string, any>();
@@ -99,9 +101,10 @@ export class AccessLogsComponent {
       this.accessLogs = logs.map(log => ({
         ...log,
         vehicle: vehicleMap.get(log.vehicle_id),
-        user: userMap.get(log.user_id)
+        user: this.userRole === 'admin' ? userMap.get(log.user_id) : null
       }));
+
+      this.loadingLogs = false;
     });
   }
-
 }

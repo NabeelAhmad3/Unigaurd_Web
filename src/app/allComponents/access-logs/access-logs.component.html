@@ -1,58 +1,60 @@
 <div class="access-logs">
-<h1>Access Logs</h1>
+  <h1>Access Logs</h1>
 
-<div class="filters">
-  <div class="date-filters">
-    <div class="form-group">
-      <label for="start-date">Start Date</label>
-      <input type="date" id="start-date" [(ngModel)]="startDate" />
-    </div>
-    <div class="form-group">
-      <label for="end-date">End Date</label>
-      <input type="date" id="end-date" [(ngModel)]="endDate" />
-    </div>
-  </div>
-
-  <div class="status-filter">
-    <label>Status Filter</label>
-    <div class="checkbox-group">
-      <div class="checkbox-item" *ngFor="let status of ['Granted', 'Denied', 'Pending']">
-        <input type="checkbox"
-               [id]="'status-' + status"
-               [checked]="statusFilter.includes(status)"
-               (change)="onStatusFilterChange(status, $event)">
-        <label [attr.for]="'status-' + status">{{ status }}</label>
+  <div class="filters">
+    <div class="date-filters">
+      <div class="form-group">
+        <label for="start-date">Start Date</label>
+        <input type="date" id="start-date" [(ngModel)]="startDate" />
+      </div>
+      <div class="form-group">
+        <label for="end-date">End Date</label>
+        <input type="date" id="end-date" [(ngModel)]="endDate" />
       </div>
     </div>
-  </div>
 
-  <button (click)="fetchAccessLogs()" [disabled]="loadingLogs" class="fetch-btn">
-    {{ loadingLogs ? 'Loading...' : 'Fetch Logs' }}
-  </button>
-</div>
-
-<div class="logs-list">
-  <div *ngFor="let log of accessLogs" class="log-item">
-    <div class="log-status">
-      <div *ngIf="log.status === 'Granted'" class="status-icon success">✅</div>
-      <div *ngIf="log.status === 'Denied'" class="status-icon error">❌</div>
-      <div *ngIf="log.status === 'Pending'" class="status-icon pending">⏳</div>
-    </div>
-
-    <div class="log-details">
-      <div class="vehicle-info">
-        <strong>Email:</strong>{{log.vehicle?.email||'Unknown'}}
-        <strong>CNIC:</strong>{{log.vehicle?.cnic||'Unknown'}}
-        <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }}
-        <strong>Model:</strong>{{ log.vehicle?.model || 'Unknown' }}
-        <strong>Color:</strong>{{log.vehicle?.color|| 'Unknown'}}
+    <div class="status-filter">
+      <label>Status Filter</label>
+      <div class="checkbox-group">
+        <div class="checkbox-item" *ngFor="let status of ['Granted', 'Denied']">
+          <input type="checkbox" [id]="'status-' + status" [checked]="statusFilter.includes(status)"
+            (change)="onStatusFilterChange(status, $event)">
+          <label [attr.for]="'status-' + status">{{ status }}</label>
+        </div>
       </div>
     </div>
+
+    <button (click)="fetchAccessLogs()" [disabled]="loadingLogs" class="fetch-btn">
+      {{ loadingLogs ? 'Loading...' : 'Fetch Logs' }}
+    </button>
   </div>
 
-  <div *ngIf="accessLogs.length === 0 && !loadingLogs" class="no-logs">
-    No logs found for the selected filters.
-  </div>
-</div>
+  <div class="logs-list">
+    <div *ngFor="let log of accessLogs" class="log-item">
+      <div class="log-status">
+        <div *ngIf="log.status === 'Granted'" class="status-icon success">✅</div>
+        <div *ngIf="log.status === 'Denied'" class="status-icon error">❌</div>
+      </div>
 
+      <div class="log-details vehicle-info">
+        <div>
+          <strong>Name:</strong> {{ log.vehicle?.name || 'Unknown' }}
+          <strong>Email:</strong> {{ log.vehicle?.email || 'Unknown' }}
+          <strong>Reg-No:</strong> {{ log.vehicle?.registration_number || 'Unknown' }}
+          <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }}
+          <strong>Model:</strong> {{ log.vehicle?.model || 'Unknown' }}
+        </div>
+
+        <div>
+          <strong>Entry Time:</strong> {{ log.entry_time | date:'yyyy-MM-dd HH:mm:ss' }}<br>
+          <strong *ngIf="log.exit_time">Exit Time:</strong>
+          <span *ngIf="log.exit_time">{{ log.exit_time | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="accessLogs.length === 0 && !loadingLogs" class="no-logs">
+      No logs found for the selected filters.
+    </div>
+  </div>
 </div>

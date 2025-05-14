@@ -29,15 +29,9 @@
 }
 
 .company-logo img {
-  max-width: 120px;
+  max-width: 65px;
   border-radius: 60px;
   height: auto;
-}
-
-.company-logo h2 {
-  margin-top: 10px;
-  font-size: 20px;
-  font-weight: bold;
 }
 
 .sidebar.collapsed .company-logo h2,
@@ -89,6 +83,7 @@
 
 .toggle-btn .material-icons {
   font-size: 24px;
+  margin: -24px;
 }
 
 .content {
@@ -142,15 +137,6 @@
     height: auto;
   }
 
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .company-logo img {
-    max-width: 53px;
-    border-radius: 40px;
-  }
-
   .content {
     padding: 8px;
   }
@@ -160,9 +146,10 @@
   }
 }
 
-.company-logo[_ngcontent-ng-c1820319157] img[_ngcontent-ng-c1820319157] {
-  max-width: 65px;
-  border-radius: 60px;
-  height: auto;
+.user-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
 }
-

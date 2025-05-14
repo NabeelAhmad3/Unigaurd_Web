@@ -3,7 +3,7 @@
 <div class="dashboard-container">
   <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="company-logo">
-      <img src="assets/download.jpeg" alt="Company Logo" />
+      <img src="assets/icon.png" alt="Company Logo" />
       <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
     </div>
 
@@ -35,12 +35,15 @@
     <div *ngIf="message" class="message">{{ message }}</div>
 
     <div *ngFor="let user of users" class="user-card">
+      <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
       <h3>{{ user.name }}</h3>
       <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>{{ user.registration_number }}</strong></p>
+      <p><strong>Reg-No:</strong>{{ user.registration_number }}</p>
       <p><strong>Phone:</strong> {{ user.phone_number }}</p>
       <p><strong>CNIC:</strong> {{ user.cnic }}</p>
       <p><strong>Vehicle:</strong> ({{ user.plate_number }})</p>
+      <p><strong>Model:</strong> {{ user.model }}</p>
+      <p><strong>Color:</strong> {{ user.color }}</p>
     </div>
   </div>
 
@@ -60,10 +63,6 @@
           may access the security system.</li>
         <li><strong>Access Hours:</strong> Users can access the security system <strong>only between 7:00 AM and 10:00
             PM</strong>.</li>
-        <li><strong>Login Credentials:</strong> Users must log in with their unique username and password. Sharing login
-          credentials is strictly prohibited.</li>
-        <li><strong>Remote Access:</strong> Users may access the system remotely through a secure network only during
-          the authorized access hours.</li>
       </ul>
     </div>
 
@@ -74,7 +73,6 @@
           interfere with or tamper with security devices.</li>
         <li><strong>Reporting Incidents:</strong> Any suspicious activity must be reported to the security department
           immediately.</li>
-        <li><strong>Device Restrictions:</strong> Only authorized devices may be used for monitoring security.</li>
       </ul>
     </div>
 
