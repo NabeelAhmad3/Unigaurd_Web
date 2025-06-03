@@ -138,21 +138,12 @@ export class ManageUsersComponent implements OnInit {
       registration_number: user.registration_number,
       plate_number: user.plate_number
     });
-    // this.editFile = undefined;
   }
 
   cancelEditing(): void {
     this.editingUserId = null;
   }
-
-  // onEditFileSelected(event: any): void {
-  //   const file: File = event.target.files[0];
-  //   if (file) {
-  //     this.editFile = file;
-  //   }
-  // }
-
-
+  
   updateUser(userId: number): void {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
@@ -163,8 +154,7 @@ export class ManageUsersComponent implements OnInit {
       phone_number: this.editingUserForm.value.phone_number,
       registration_number: this.editingUserForm.value.registration_number,
       cnic: this.editingUserForm.value.cnic,
-      plate_number: this.editingUserForm.value.plate_number,
-      // face_embedding: this.editingUserForm.value.face_embedding || "",
+      plate_number: this.editingUserForm.value.plate_number
     };
 
 

@@ -152,3 +152,26 @@ button:hover:not(:disabled) {
     width: 100%;
   }
 }
+
+.warning-message {
+  color: #d9534f;
+  font-weight: bold;
+  
+  font-size:30px;
+}
+
+.info-message {
+  color: #5cb85c;
+  font-weight: bold;
+  font-size:40px;
+  text-align: center;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.blinking-message {
+  animation: blink 1s infinite;
+}

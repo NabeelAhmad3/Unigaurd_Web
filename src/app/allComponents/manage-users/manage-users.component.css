@@ -182,7 +182,7 @@ button:disabled {
   input[type="email"],
   input[type="password"],
   input[type="date"] {
-    width: 80%;
+    width: 90%;
     padding: 8px;
   }
 
@@ -197,4 +197,8 @@ button:disabled {
   object-fit: cover;
   border-radius: 50%;
   border: 2px solid #ccc;
+}
+.secondary-btn:hover{
+  
+  background-color: #2e4358;
 }

@@ -70,17 +70,6 @@ export class GateVideoComponent {
           timestamp: new Date().toISOString()
         };
 
-        if (res.user_id !== undefined) logPayload.user_id = res.user_id;
-        if (res.vehicle_id !== undefined) logPayload.vehicle_id = res.vehicle_id;
-        this.http.post<any>(`${API_URL}/access/`, logPayload, { headers }).subscribe({
-          next: () => {
-            console.info("Access attempt logged successfully");
-          },
-          error: (logErr) => {
-            console.warn("Failed to log access attempt:", logErr);
-          }
-        });
-
       },
       error: (err) => {
         this.message = err.error?.detail || "Failed to process video.";

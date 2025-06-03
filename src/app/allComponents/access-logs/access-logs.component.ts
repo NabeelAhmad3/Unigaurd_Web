@@ -21,6 +21,8 @@ export class AccessLogsComponent {
   loadingLogs: boolean = false;
   message: string = '';
   userRole: string = '';
+  unrecognized_plate: any;
+  data: any = null;
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {
     const today = new Date();
@@ -28,7 +30,7 @@ export class AccessLogsComponent {
     this.startDate = new Date(today);
     this.startDate.setDate(today.getDate() - 30);
 
-    this.userRole = sessionStorage.getItem('user_role') || ''; // Add your role fetch logic
+    this.userRole = sessionStorage.getItem('admin') || ''; // Add your role fetch logic
     this.fetchAccessLogs();
   }
 
@@ -48,6 +50,7 @@ export class AccessLogsComponent {
 
     this.http.get<any[]>(`${API_URL}/access`, { headers }).subscribe({
       next: (logs) => {
+        this.data = logs;
         const filteredLogs = logs.filter(log => {
           const entryTime = new Date(log.entry_time);
           return (
@@ -68,7 +71,7 @@ export class AccessLogsComponent {
   }
 
   enrichLogsWithDetails(logs: any[], headers: HttpHeaders): void {
-   const vehicleIds = [...new Set(logs.map(log => log.vehicle_id).filter(id => id))];
+    const vehicleIds = [...new Set(logs.map(log => log.vehicle_id).filter(id => id))];
 
     const userIds = [...new Set(logs.map(log => log.user_id).filter(id => id))];
 

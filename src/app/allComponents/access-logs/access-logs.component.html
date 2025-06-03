@@ -37,22 +37,48 @@
       </div>
 
       <div class="log-details vehicle-info">
-        <div>
-          <strong>Name:</strong> {{ log.vehicle?.name || 'Unknown' }}
-          <strong>Email:</strong> {{ log.vehicle?.email || 'Unknown' }}
-          <strong>Reg-No:</strong> {{ log.vehicle?.registration_number || 'Unknown' }}
-          <strong>Vehicle:</strong> {{ log.vehicle?.plate_number || 'Unknown' }}
-          <strong>Model:</strong> {{ log.vehicle?.model || 'Unknown' }}
-        </div>
 
-        <div>
-          <strong>Entry Time:</strong> {{ log.entry_time | date:'yyyy-MM-dd HH:mm:ss' }}<br>
-          <strong *ngIf="log.exit_time">Exit Time:</strong>
-          <span *ngIf="log.exit_time">{{ log.exit_time | date:'yyyy-MM-dd HH:mm:ss' }}</span>
-        </div>
+        <!-- Show minimal info for unrecognized vehicles -->
+        <ng-container *ngIf="!log.is_recognized; else recognizedBlock">
+          <div>
+            <strong>Unrecognized Plate:</strong>
+            {{ log.vehicle_details.plate_number || 'Unknown' }}
+          </div>
+          <div>
+            <strong>Entry Time:</strong>
+            {{ log.entry_time | date: 'yyyy-MM-dd HH:mm:ss' }}
+          </div>
+          <div>
+            <small class="recognition">⚠️ Unrecognized Vehicle</small>
+          </div>
+        </ng-container>
+
+        <!-- Full info for recognized vehicles -->
+        <ng-template #recognizedBlock>
+          <div>
+            <strong>Vehicle:</strong>
+            {{ log.vehicle_details?.plate_number || 'Unknown' }}
+            ({{ log.vehicle_details?.model || 'Unknown' }} {{ log.vehicle_details?.color || '' }})
+          </div>
+
+          <div>
+            <strong>User:</strong>
+            {{ log.vehicle_details?.owner_name || 'Unknown' }}
+            ({{ log.vehicle_details?.owner_email || 'Unknown' }})
+          </div>
+
+          <div>
+            <strong>Entry Time:</strong>
+            {{ log.entry_time | date: 'yyyy-MM-dd HH:mm:ss' }}
+          </div>
+
+          <div>
+            <small class="recognition">🔍 Recognized Vehicle</small>
+          </div>
+        </ng-template>
+
       </div>
     </div>
-
     <div *ngIf="accessLogs.length === 0 && !loadingLogs" class="no-logs">
       No logs found for the selected filters.
     </div>
