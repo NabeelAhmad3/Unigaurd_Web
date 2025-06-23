@@ -176,4 +176,24 @@ button:disabled {
 .vehicle-info .unknown {
   color: #f44336;
   font-style: italic;
+}.status-granted {
+ 
+  color: #4CAF50;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-denied {
+color: #f44336;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.material-icons {
+  font-size: 18px;
+  vertical-align: middle;
 }

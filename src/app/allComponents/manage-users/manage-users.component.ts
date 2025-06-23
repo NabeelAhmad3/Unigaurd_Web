@@ -18,7 +18,6 @@ export class ManageUsersComponent implements OnInit {
 
   userTabs: string[] = ['Register New User', 'View/Edit Users'];
   selectedUserTab: string = 'Register New User';
-  message: string = '';
 
   regUserForm: FormGroup;
   regFile?: File;
@@ -66,7 +65,6 @@ export class ManageUsersComponent implements OnInit {
 
   registerUser(): void {
     if (this.regUserForm.invalid || !this.regFile) {
-      this.message = 'All fields are required, including face image and valid credentials.';
       return;
     }
   
@@ -83,7 +81,6 @@ export class ManageUsersComponent implements OnInit {
   
     this.http.post<any>(`${API_URL}/userdata/`, formData, { headers }).subscribe({
       next: (res) => {
-        this.message = 'User registered successfully!';
         this.regUserForm.reset();
         this.regFile = undefined;
         if (this.selectedUserTab === 'View/Edit Users') {
@@ -91,7 +88,6 @@ export class ManageUsersComponent implements OnInit {
         }
       },
       error: (err) => {
-        this.message = err.error?.detail || 'Failed to register user.';
         console.error('Registration error:', err);
       }
     });
@@ -115,10 +111,8 @@ export class ManageUsersComponent implements OnInit {
         } else {
           this.users = [];
         }
-        this.message = this.users.length === 0 ? 'No users found.' : '';
       },
       error: (err) => {
-        this.message = 'Failed to fetch users.';
         console.error('Error fetching users:', err);
       }
     });
@@ -160,12 +154,10 @@ export class ManageUsersComponent implements OnInit {
 
     this.http.put<any>(`${API_URL}/userdata/${userId}`, updatedData, { headers }).subscribe({
       next: () => {
-        this.message = 'User updated successfully!';
         this.editingUserId = null;
         this.getUsers();
       },
       error: (err) => {
-        this.message = err.error?.detail || 'Failed to update user.';
         console.error('Update error:', err);
       }
     });
@@ -176,11 +168,9 @@ export class ManageUsersComponent implements OnInit {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
     this.http.delete<any>(`${API_URL}/userdata/${userId}`, { headers }).subscribe({
       next: () => {
-        this.message = 'User deleted successfully!';
         this.getUsers();
       },
       error: (err) => {
-        this.message = 'Failed to delete user.';
         console.error('Delete error:', err);
       }
     });

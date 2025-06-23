@@ -1,10 +1,6 @@
 <div class="manage-users">
   <h1>Manage Users and Vehicles</h1>
 
-  <div *ngIf="message" [ngClass]="message.includes('successfully') ? 'success-message' : 'error-message'">
-    {{ message }}
-  </div>
-
   <div class="tabs">
     <div *ngFor="let tab of userTabs" [class.active]="selectedUserTab === tab" (click)="selectedUserTab = tab"
       class="tab">

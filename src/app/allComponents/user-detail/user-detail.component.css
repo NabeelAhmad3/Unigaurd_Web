@@ -115,15 +115,65 @@
 }
 
 .user-card {
-  background: white;
+  background: #ffffff;
   padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-.user-card h3 {
+.user-card:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.user-info img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.details p {
+  margin: 5px 0;
+}
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: #e0e0e0;
+  margin: 20px 0;
+}
+
+.user-logs {
+  background-color: #f9f9f9;
+  border-left: 4px solid #2196f3;
+  padding: 15px 20px;
+  border-radius: 8px;
+}
+
+.user-logs h4 {
   margin-top: 0;
+  margin-bottom: 15px;
+  color: #2196f3;
+}
+
+.log-entry {
+  padding: 10px 0;
+  border-bottom: 1px dashed #ccc;
+}
+
+.log-entry:last-child {
+  border-bottom: none;
 }
 
 
@@ -145,11 +195,24 @@
     gap: 2px;
   }
 }
+.status-granted {
+ 
+  color: #4CAF50;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-.user-card img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #ccc;
+.status-denied {
+color: #f44336;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.material-icons {
+  font-size: 18px;
+  vertical-align: middle;
 }

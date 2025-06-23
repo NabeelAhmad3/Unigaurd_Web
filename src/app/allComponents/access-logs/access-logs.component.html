@@ -31,14 +31,19 @@
 
   <div class="logs-list">
     <div *ngFor="let log of accessLogs" class="log-item">
-      <div class="log-status">
-        <div *ngIf="log.status === 'Granted'" class="status-icon success">✅</div>
-        <div *ngIf="log.status === 'Denied'" class="status-icon error">❌</div>
-      </div>
+      <p>
+        <span [ngClass]="{
+      'status-granted': log.status === 'Granted',
+      'status-denied': log.status === 'Denied'
+    }">
+          <span class="material-icons">
+            {{ log.status === 'Granted' ? 'check_circle' : 'cancel' }}
+          </span>
+          {{ log.status }}
+        </span>
+      </p>
 
       <div class="log-details vehicle-info">
-
-        <!-- Show minimal info for unrecognized vehicles -->
         <ng-container *ngIf="!log.is_recognized; else recognizedBlock">
           <div>
             <strong>Unrecognized Plate:</strong>
@@ -53,7 +58,6 @@
           </div>
         </ng-container>
 
-        <!-- Full info for recognized vehicles -->
         <ng-template #recognizedBlock>
           <div>
             <strong>Vehicle:</strong>

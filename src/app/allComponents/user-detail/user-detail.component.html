@@ -35,16 +35,46 @@
     <div *ngIf="message" class="message">{{ message }}</div>
 
     <div *ngFor="let user of users" class="user-card">
-      <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
-      <h3>{{ user.name }}</h3>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Reg-No:</strong>{{ user.registration_number }}</p>
-      <p><strong>Phone:</strong> {{ user.phone_number }}</p>
-      <p><strong>CNIC:</strong> {{ user.cnic }}</p>
-      <p><strong>Vehicle:</strong> ({{ user.plate_number }})</p>
-      <p><strong>Model:</strong> {{ user.model }}</p>
-      <p><strong>Color:</strong> {{ user.color }}</p>
+      <!-- User Information -->
+      <div class="user-info">
+        <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
+        <div class="details">
+          <h3>{{ user.name }}</h3>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Reg-No:</strong> {{ user.registration_number }}</p>
+          <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+          <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+          <p><strong>Vehicle:</strong> {{ user.plate_number }}</p>
+          <p><strong>Model:</strong> {{ user.model }}</p>
+          <p><strong>Color:</strong> {{ user.color }}</p>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="section-divider" *ngIf="user.logs?.length" />
+
+      <!-- Logs Information -->
+      <div class="user-logs" *ngIf="user.logs?.length">
+        <h4>Logs</h4>
+        <div class="log-entry" *ngFor="let log of user.logs">
+          <p>
+            <span [ngClass]="{
+      'status-granted': log.status === 'Granted',
+      'status-denied': log.status === 'Denied'
+    }">
+              <span class="material-icons">
+                {{ log.status === 'Granted' ? 'check_circle' : 'cancel' }}
+              </span>
+              {{ log.status }}
+            </span>
+          </p>
+          <p><strong>Status:</strong> {{ log.status }}</p>
+          <p><strong>Plate:</strong> {{ log.plate_number }}</p>
+          <p><strong>Entry Time:</strong> {{ log.entry_time | date:'medium' }}</p>
+        </div>
+      </div>
     </div>
+
   </div>
 
   <div class="content" *ngIf="selectedPage === 'Rules Page'">
