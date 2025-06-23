@@ -30,7 +30,7 @@ export class AccessLogsComponent {
     this.startDate = new Date(today);
     this.startDate.setDate(today.getDate() - 30);
 
-    this.userRole = sessionStorage.getItem('admin') || ''; // Add your role fetch logic
+    this.userRole = sessionStorage.getItem('admin') || ''; 
     this.fetchAccessLogs();
   }
 

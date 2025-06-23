@@ -1,7 +1,6 @@
 <div class="process-video-container">
   <h1>Process Gate Access Video</h1>
 
-  <!-- Upload Section -->
   <div class="upload-section">
     <label for="gateVideo" class="upload-btn">Click To Upload Gate Video</label>
     <input type="file" id="gateVideo" accept="video/*" (change)="onGateVideoSelected($event)" style="display: none;" />
@@ -10,7 +9,6 @@
     <input type="file" id="faceVideo" accept="video/*" (change)="onFaceVideoSelected($event)" style="display: none;" />
   </div>
 
-  <!-- Video Preview -->
   <div class="video-preview">
     <div *ngIf="gateVideoUrl">
       <h3>Gate Video Preview</h3>
@@ -22,16 +20,13 @@
     </div>
   </div>
 
-  <!-- Process Button -->
   <button (click)="processGateVideo()" [disabled]="processing">
     {{ processing ? 'Processing...' : 'Process Videos for Access' }}
   </button>
 
-  <!-- Results Section -->
   <div *ngIf="processResult" class="results">
     <h2>Access Decision</h2>
 
-    <!-- Access Granted or Denied Messages -->
     <div *ngIf="processResult.access_granted; else denied">
           <p class="info-message blinking-message">
             🟢 You may stay inside the campus as long as you want.
@@ -51,7 +46,6 @@
       <p *ngIf="processResult.face_mismatch">Face does not match the vehicle owner.</p>
     </ng-template>
 
-    <!-- Confidence Results -->
     <div class="recognition-columns">
       <div class="column">
         <h3>License Plate Recognition</h3>

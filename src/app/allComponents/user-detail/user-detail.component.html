@@ -4,7 +4,7 @@
   <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
     <div class="company-logo">
       <img src="assets/icon.png" alt="Company Logo" />
-      <h2 *ngIf="!isSidebarCollapsed">Gate Access</h2>
+      <h2 *ngIf="!isSidebarCollapsed">UniGuard Security System</h2>
     </div>
 
     <button class="toggle-btn" (click)="toggleSidebar()">
@@ -25,7 +25,9 @@
     </nav>
   </div>
 
-  <div class="content" *ngIf="selectedPage === 'User Dashboard'">
+  <div class="content"
+     *ngIf="selectedPage === 'User Dashboard'"
+     [ngClass]="{ 'no-data-bg': users.length === 0 }">
     <div class="form-group">
       <input type="text" placeholder="Search by CNIC" [(ngModel)]="searchCnic">
       <button (click)="getUsers()">Search</button>
@@ -35,7 +37,7 @@
     <div *ngIf="message" class="message">{{ message }}</div>
 
     <div *ngFor="let user of users" class="user-card">
-      <!-- User Information -->
+     
       <div class="user-info">
         <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
         <div class="details">
@@ -50,10 +52,8 @@
         </div>
       </div>
 
-      <!-- Divider -->
       <hr class="section-divider" *ngIf="user.logs?.length" />
 
-      <!-- Logs Information -->
       <div class="user-logs" *ngIf="user.logs?.length">
         <h4>Logs</h4>
         <div class="log-entry" *ngFor="let log of user.logs">
@@ -131,7 +131,7 @@
     <div class="section">
       <h2>Contact Information</h2>
       <p>For technical assistance or to report suspicious activities, please contact the <strong>University Security
-          Office</strong> at [phone/email].</p>
+          Office</strong> at 051-755-950.</p>
     </div>
   </div>
 </div>

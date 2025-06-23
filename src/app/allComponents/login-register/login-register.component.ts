@@ -92,7 +92,6 @@ login() {
         next: (res) => {
           this.message = 'Registration successful. Please login.';
           this.showLogin = true;
-          // this.registerForm.reset();
           
         },
         error: (err) => {

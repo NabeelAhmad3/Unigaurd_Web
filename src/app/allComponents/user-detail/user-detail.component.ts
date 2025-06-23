@@ -59,6 +59,7 @@ export class UserDetailComponent {
   }
   resetSearch(): void {
     this.searchCnic = '';
+    this.users=[];
   }
 
   isSidebarCollapsed = false;
