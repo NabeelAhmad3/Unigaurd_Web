@@ -58,13 +58,18 @@
   <div *ngIf="selectedUserTab === 'View/Edit Users'" class="tab-content">
     <div class="search-box">
       <input type="text" placeholder="Search by CNIC" [(ngModel)]="searchCnic">
-      <button (click)="getUsers()">Search</button>
-      <button (click)="resetSearch()" class="secondary-btn">Reset</button>
+      <img src="assets/search.png" class="buttons2" (click)="getUsers()"/>
+      <img src="assets/reset.png" class="buttons2" (click)="resetSearch()"/>
     </div>
 
     <div class="users-list">
       <div *ngFor="let user of users" class="user-card">
         <ng-container *ngIf="editingUserId !== user.id">
+          
+          <div class="user-actions">
+         <img src="assets/edit.png" alt="edit" class="buttons"(click)="startEditing(user)"/>
+         <img src="assets/delete.png" alt="edit" class="buttons" (click)="deleteUser(user.id)"/>
+       </div>
           <div class="user-info">
             <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
             <h3>{{ user.name }}</h3>
@@ -73,10 +78,7 @@
             <p><strong>CNIC:</strong> {{ user.cnic }}</p>
             <p><strong>Vehicle:</strong> {{ user.registration_number }} ({{ user.plate_number }})</p>
           </div>
-          <div class="user-actions">
-            <button (click)="startEditing(user)" class="edit-btn">Edit</button>
-            <button (click)="deleteUser(user.id)" class="delete-btn">Delete</button>
-          </div>
+         
         </ng-container>
 
         <ng-container *ngIf="editingUserId === user.id">
@@ -109,7 +111,7 @@
             </div>
 
             <div class="edit-actions">
-              <button type="button" (click)="updateUser(user.id)" [disabled]="editingUserForm.invalid">Save</button>
+              <button type="button" (click)="updateUser(user.id)" [disabled]="editingUserForm.invalid" >Save</button>
               <button type="button" (click)="cancelEditing()" class="cancel-btn">Cancel</button>
             </div>
           </form>

@@ -164,6 +164,10 @@ export class ManageUsersComponent implements OnInit {
   }
 
   deleteUser(userId: number): void {
+    const confirmed = window.confirm('Are you sure you want to delete this user?');
+  if (!confirmed) {
+    return;
+  }
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
     this.http.delete<any>(`${API_URL}/userdata/${userId}`, { headers }).subscribe({
