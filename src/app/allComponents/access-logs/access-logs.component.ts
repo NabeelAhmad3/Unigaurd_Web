@@ -23,6 +23,7 @@ export class AccessLogsComponent {
   userRole: string = '';
   unrecognized_plate: any;
   data: any = null;
+  showDropdown: boolean | undefined;
 
   constructor(private http: HttpClient, private datePipe: DatePipe) {
     const today = new Date();
@@ -109,5 +110,46 @@ export class AccessLogsComponent {
 
       this.loadingLogs = false;
     });
+  }
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+  
+  downloadPDF() {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    this.http
+      .get(`${API_URL}/access/export/pdf`, { headers, responseType: 'blob' })
+      .subscribe({
+        next: (response: Blob) => this.saveFile(response, 'access_logs.pdf'),
+        error: (err) => console.error('Failed to download PDF:', err)
+      });
+  }
+
+  // ✅ Excel Download Method
+  downloadExcel() {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+
+    this.http
+      .get(`${API_URL}/access/export/excel`, { headers, responseType: 'blob' })
+      .subscribe({
+        next: (response: Blob) => this.saveFile(response, 'access_logs.xlsx'),
+        error: (err) => console.error('Failed to download Excel:', err)
+      });
+  }
+
+  // ✅ Helper to Save File
+  private saveFile(data: Blob, filename: string) {
+    const blob = new Blob([data]);
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+
+    window.URL.revokeObjectURL(url);
   }
 }

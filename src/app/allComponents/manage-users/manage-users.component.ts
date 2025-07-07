@@ -35,7 +35,7 @@ export class ManageUsersComponent implements OnInit {
     this.regUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', Validators.required],
+      car_name: ['', Validators.required],
       cnic: ['', Validators.required],
       registration_number: ['', Validators.required],
       plate_number: ['', Validators.required],
@@ -46,7 +46,7 @@ export class ManageUsersComponent implements OnInit {
     this.editingUserForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone_number: ['', Validators.required],
+      car_name: ['', Validators.required],
       registration_number: ['', Validators.required],
       plate_number: ['', Validators.required],
       cnic:['',Validators.required]
@@ -128,7 +128,7 @@ export class ManageUsersComponent implements OnInit {
       name: user.name,
       email: user.email,
       cnic:user.cnic,
-      phone_number: user.phone_number,
+      car_name: user.car_name,
       registration_number: user.registration_number,
       plate_number: user.plate_number
     });
@@ -145,7 +145,7 @@ export class ManageUsersComponent implements OnInit {
     const updatedData = {
       name: this.editingUserForm.value.name,
       email: this.editingUserForm.value.email,
-      phone_number: this.editingUserForm.value.phone_number,
+      car_name: this.editingUserForm.value.car_name,
       registration_number: this.editingUserForm.value.registration_number,
       cnic: this.editingUserForm.value.cnic,
       plate_number: this.editingUserForm.value.plate_number

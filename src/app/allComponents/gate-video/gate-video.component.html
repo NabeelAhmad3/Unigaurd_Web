@@ -2,7 +2,7 @@
   <h1>Process Gate Access Video</h1>
 
   <div class="upload-section">
-    <label for="gateVideo" class="upload-btn">Click To Upload Gate Video</label>
+    <label for="gateVideo" class="upload-btn">Click To Upload Plate Video</label>
     <input type="file" id="gateVideo" accept="video/*" (change)="onGateVideoSelected($event)" style="display: none;" />
 
     <label for="faceVideo" class="upload-btn">Click To Upload Face Video</label>
@@ -11,7 +11,7 @@
 
   <div class="video-preview">
     <div *ngIf="gateVideoUrl">
-      <h3>Gate Video Preview</h3>
+      <h3>Plate Video Preview</h3>
       <video width="300" controls [src]="gateVideoUrl"></video>
     </div>
     <div *ngIf="faceVideoUrl">

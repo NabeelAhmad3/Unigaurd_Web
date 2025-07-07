@@ -20,16 +20,16 @@
           <input type="email" id="email" formControlName="email">
         </div>
         <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="text" id="phone" formControlName="phone_number">
-        </div>
-        <div class="form-group">
           <label for="cnic">CNIC</label>
           <input type="text" id="cnic" formControlName="cnic">
         </div>
         <div class="form-group">
           <label for="reg_number">Registration Number</label>
           <input type="text" id="reg_number" formControlName="registration_number">
+        </div>
+        <div class="form-group">
+          <label for="car_name">Vehicle Name</label>
+          <input type="text" id="car_name" formControlName="car_name">
         </div>
         <div class="form-group">
           <label for="plate_number">Plate Number</label>
@@ -74,8 +74,8 @@
             <img [src]="'data:image/jpeg;base64,' + user.face_image_data" alt="User Face" />
             <h3>{{ user.name }}</h3>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            <p><strong>Phone:</strong> {{ user.phone_number }}</p>
             <p><strong>CNIC:</strong> {{ user.cnic }}</p>
+            <p><strong>Vehicle Name:</strong> {{ user.car_name }}</p>
             <p><strong>Vehicle:</strong> {{ user.registration_number }} ({{ user.plate_number }})</p>
           </div>
          
@@ -93,16 +93,16 @@
                 <input type="email" id="edit-email" formControlName="email">
               </div>
               <div class="form-group">
-                <label for="edit-phone">Phone</label>
-                <input type="text" id="edit-phone" formControlName="phone_number">
-              </div>
-              <div class="form-group">
-                <label for="edit-cnic">cnic</label>
+                <label for="edit-cnic">Cnic</label>
                 <input type="text" id="edit-cnic" formControlName="cnic">
               </div>
               <div class="form-group">
                 <label for="edit-reg">Registration Number</label>
                 <input type="text" id="edit-reg" formControlName="registration_number">
+              </div>
+              <div class="form-group">
+                <label for="car_name">Car Name</label>
+                <input type="text" id="car_name" formControlName="car_name">
               </div>
               <div class="form-group">
                 <label for="edit-plate">Plate Number</label>

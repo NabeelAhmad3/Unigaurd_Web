@@ -1,7 +1,7 @@
 <div class="access-logs">
   <h1>Access Logs</h1>
 
-  <div class="filters">
+  <!-- <div class="filters">
     <div class="date-filters">
       <div class="form-group">
         <label for="start-date">Start Date</label>
@@ -27,7 +27,19 @@
     <button (click)="fetchAccessLogs()" [disabled]="loadingLogs" class="fetch-btn">
       {{ loadingLogs ? 'Loading...' : 'Fetch Logs' }}
     </button>
+  </div> -->
+<div style="position: relative; display: inline-block;">
+  <button class="buttons" (click)="toggleDropdown()">
+    Download ▼
+  </button>
+
+  <div *ngIf="showDropdown" class="dropdown-menu">
+    <button class="dropdown-item" (click)="downloadPDF()">Download as PDF</button>
+    <button class="dropdown-item" (click)="downloadExcel()">Download as Excel</button>
   </div>
+</div>
+
+
 
   <div class="logs-list">
     <div *ngFor="let log of accessLogs" class="log-item">
@@ -47,7 +59,7 @@
         <ng-container *ngIf="!log.is_recognized; else recognizedBlock">
           <div>
             <strong>Unrecognized Plate:</strong>
-            {{ log.vehicle_details.plate_number || 'Unknown' }}
+            {{ log.vehicle_details.plate_number || 'UnRecognized' }}
           </div>
           <div>
             <strong>Entry Time:</strong>
@@ -61,14 +73,14 @@
         <ng-template #recognizedBlock>
           <div>
             <strong>Vehicle:</strong>
-            {{ log.vehicle_details?.plate_number || 'Unknown' }}
-            ({{ log.vehicle_details?.model || 'Unknown' }} {{ log.vehicle_details?.color || '' }})
+            {{ log.vehicle_details?.plate_number || 'UnRecognized' }}
+            ({{ log.vehicle_details?.model || 'UnRecognized' }} {{ log.vehicle_details?.color || '' }})
           </div>
 
           <div>
             <strong>User:</strong>
-            {{ log.vehicle_details?.owner_name || 'Unknown' }}
-            ({{ log.vehicle_details?.owner_email || 'Unknown' }})
+            {{ log.vehicle_details?.owner_name || 'UnRecognized' }}
+            ({{ log.vehicle_details?.owner_email || 'UnRecognized' }})
           </div>
 
           <div>
